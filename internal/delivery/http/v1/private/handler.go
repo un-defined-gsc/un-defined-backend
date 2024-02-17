@@ -36,9 +36,7 @@ func (h *PrivateHandler) Init(router fiber.Router) {
 	root.Get("/", func(c *fiber.Ctx) error {
 		return h.responseJson(200, "", nil)
 	})
-	h.initMonitorRoutes(root)
 	h.initUserRoutes(root)
-	h.initFeedbackRoutes(root)
 }
 
 func (h *PrivateHandler) authMiddleware(c *fiber.Ctx) error {

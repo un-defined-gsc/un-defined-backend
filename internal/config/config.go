@@ -14,12 +14,6 @@ type Config struct {
 	Log      Log      `yaml:"log"`
 	App      App      `yaml:"app"`
 	Email    Email    `yaml:"email"`
-	Data     Data     `yaml:"data"`
-}
-
-type Data struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
 }
 
 type Email struct {

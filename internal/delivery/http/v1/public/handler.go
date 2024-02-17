@@ -31,7 +31,5 @@ func (h *PublicHandler) Init(router fiber.Router) {
 	root.Get("/", func(c *fiber.Ctx) error {
 		return h.responseJson(200, response_types.HelloPublicRoute, nil)
 	})
-	h.initCaptcaRoutes(root)
 	h.initUserRoutes(root)
-
 }
