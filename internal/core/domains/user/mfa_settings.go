@@ -8,9 +8,9 @@ import (
 )
 
 type MFASetting struct {
-	UserUUID  uuid.UUID    `db:"user_uuid"`
-	Key       *string      `db:"key"`
-	CreatedAt *time.Time   `db:"created_at"`
-	KeyImage  bytes.Buffer `db:"-"`
+	UserUUID  uuid.UUID    `gorm:"column:user_uuid"`
+	Key       *string      `gorm:"column:key"`
+	CreatedAt *time.Time   `gorm:"column:created_at"`
+	KeyImage  bytes.Buffer `gorm:"-:all"`
 	// LastLogUUID *uuid.UUID `db:"last_log_uuid"`
 }

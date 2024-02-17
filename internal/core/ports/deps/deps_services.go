@@ -10,14 +10,14 @@ type IDepsServices interface {
 	ValidatorService() IValidatorService
 	MailService() IEmailService
 	OTPService() IOTPService
-	CaptchaService() ICaptchaService
+	// CaptchaService() ICaptchaService
 }
 
-type ICaptchaService interface {
-	New() string
-	GetImageBytes(id string) (buf bytes.Buffer, err error)
-	Verify(id, value string) bool
-}
+// type ICaptchaService interface {
+// 	New() string
+// 	GetImageBytes(id string) (buf bytes.Buffer, err error)
+// 	Verify(id, value string) bool
+// }
 
 type IHasherService interface {
 	HashPassword(password string) (hashedPassword string, err error)

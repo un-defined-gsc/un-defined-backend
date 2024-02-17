@@ -3,7 +3,7 @@ package deps_services
 import deps_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/deps"
 
 type depsServices struct {
-	captchaService   deps_ports.ICaptchaService
+	// captchaService   deps_ports.ICaptchaService
 	hasherService    deps_ports.IHasherService
 	mailerService    deps_ports.IEmailService
 	otpService       deps_ports.IOTPService
@@ -11,14 +11,14 @@ type depsServices struct {
 }
 
 func NewDepsServices(
-	captchaService deps_ports.ICaptchaService,
+	// captchaService deps_ports.ICaptchaService,
 	hasherService deps_ports.IHasherService,
 	mailerService deps_ports.IEmailService,
 	otpService deps_ports.IOTPService,
 	validatorService deps_ports.IValidatorService,
 ) deps_ports.IDepsServices {
 	return &depsServices{
-		captchaService:   captchaService,
+		// captchaService:   captchaService,
 		hasherService:    hasherService,
 		mailerService:    mailerService,
 		otpService:       otpService,
@@ -26,9 +26,9 @@ func NewDepsServices(
 	}
 }
 
-func (s *depsServices) CaptchaService() deps_ports.ICaptchaService {
-	return s.captchaService
-}
+// func (s *depsServices) CaptchaService() deps_ports.ICaptchaService {
+// 	return s.captchaService
+// }
 
 func (s *depsServices) HasherService() deps_ports.IHasherService {
 	return s.hasherService

@@ -18,7 +18,7 @@ type userRepositories struct {
 
 func NewUserRepositories(db *gorm.DB, redis *redis.Client) user_ports.IUsersRepositories {
 	return &userRepositories{
-		usersRepository:    user_gorm_repositories.NewUserRepository(db),
+		usersRepository:    user_gorm_repositories.NewUsersRepository(db),
 		bannedsRepository:  user_gorm_repositories.NewBannedsRepository(db),
 		mfasRepository:     user_gorm_repositories.NewMFAsRepository(db),
 		tokenRepository:    user_redis_repositories.NewTokensRepository(redis),

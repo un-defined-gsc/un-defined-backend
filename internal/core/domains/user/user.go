@@ -8,23 +8,23 @@ import (
 )
 
 type User struct {
-	UUID          *uuid.UUID `json:"uuid,omitempty"`
-	Password      string     `json:"password,omitempty"`
-	FirstName     string     `json:"firstname" validate:"required,alphaunicode" example:"Amine Beren"`
-	LastName      string     `json:"lastname" validate:"required,alphaunicode" example:"Çelik"`
-	Lang          string     `json:"lang" validate:"required,oneof=en tr" example:"tr"` //🤘
-	Email         string     `json:"email" validate:"omitempty,email" example:"amine@un-defined.com"`
-	EmailVerified bool       `json:"email_verified"`
-	MasterAdmin   bool       `json:"-"`
-	Banned        bool       `json:"-"`
-	MFAEnabled    bool       `json:"mfa_enabled"`
-	CreatedAt     *time.Time `json:"created_at"`
-	UpdatedAt     *time.Time `json:"-"`
-	Disabled      bool       `json:"-"`
-	DisabledAt    *time.Time `json:"-"`
-	LastLogin     *time.Time `json:"last_login"`
-	Gender        string     `json:"gender"`
-	Appeal        string     `json:"appeal"`
+	UUID          *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	Password      string     `gorm:"column:password" json:"password,omitempty"`
+	FirstName     string     `gorm:"column:first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
+	LastName      string     `gorm:"column:last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`
+	Lang          string     `gorm:"column:lang" json:"lang" validate:"required,oneof=en tr" example:"tr"` //🤘
+	Email         string     `gorm:"column:email,unique" json:"email" validate:"omitempty,email" example:"resul@mon.time"`
+	EmailVerified bool       `gorm:"column:email_verified" json:"email_verified"`
+	MasterAdmin   bool       `gorm:"column:master_admin" json:"-"`
+	Banned        bool       `gorm:"column:banned" json:"-"`
+	MFAEnabled    bool       `gorm:"column:mfa_enabled" json:"mfa_enabled"`
+	CreatedAt     *time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt     *time.Time `gorm:"column:updated_at" json:"-"`
+	Disabled      bool       `gorm:"column:disabled" json:"-"`
+	DisabledAt    *time.Time `gorm:"column:disabled_at" json:"-"`
+	LastLogin     *time.Time `gorm:"column:last_login" json:"last_login"`
+	Gender        string     `gorm:"column:gender" json:"gender" validate:"oneof=male,female,other" example:"male"`
+	Appeal        *string    `gorm:"column:appeal" json:"appeal" validate:"omitempty" example:"I am a Attack Helicopter 🚁"`
 }
 
 func (u User) MarshalBinary() ([]byte, error) {
