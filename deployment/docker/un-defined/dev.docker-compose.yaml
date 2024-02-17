@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=change-me
+      - POSTGRES_USER=change-me
+      - POSTGRES_DB=change-me
+    restart: always
+    networks:
+       un-defined:
+  
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass change-me
+    volumes:
+      - redis_volume:/data  
+    restart: always
+    networks:
+       un-defined:
+
+  api:
+    build:
+      context: ../../../.
+      dockerfile: ./deployment/docker/un-defined/dev.Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ../../../.:/app
+    networks:
+       un-defined:
+
+volumes:
+  postgres_volume: 
+  redis_volume:
+
+networks:
+  un-defined:
