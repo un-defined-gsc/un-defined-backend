@@ -34,10 +34,6 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	if err = s.deps.ValidatorService().ValidateStruct(login); err != nil {
 		return
 	}
-	if !s.deps.CaptchaService().Verify(login.CaptchaID, login.CaptchaKey) {
-		err = service_errors.ErrCaptchaInvalid
-		return
-	}
 	user, err := s.userRepositories.UsersRepository().GetByEmail(ctx, login.Email)
 	if err != nil {
 		if err == service_errors.ErrDataNotFound {
@@ -102,10 +98,6 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 
 func (s *userService) Register(ctx context.Context, register domains.RegisterDTO) (err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(register); err != nil {
-		return
-	}
-	if !s.deps.CaptchaService().Verify(register.CaptchaID, register.CaptchaKey) {
-		err = service_errors.ErrCaptchaInvalid
 		return
 	}
 	count, err := s.userRepositories.UsersRepository().GetCountByEmail(ctx, register.Email)
@@ -195,10 +187,6 @@ func (s *userService) VerifyEmail(ctx context.Context, token string) (err error)
 
 func (s *userService) ChangeEmail(ctx context.Context, newEmail domains.EmailCahangeDTO) (err error) { //Bunlar doğru kullanım mı bilmiyorum şimdilik böyle kalsın
 	if err = s.deps.ValidatorService().ValidateStruct(newEmail); err != nil {
-		return
-	}
-	if !s.deps.CaptchaService().Verify(newEmail.CaptchaID, newEmail.CaptchaKey) {
-		err = service_errors.ErrCaptchaInvalid
 		return
 	}
 	user, err := s.userRepositories.UsersRepository().GetByUUID(ctx, newEmail.UserId)
@@ -302,10 +290,6 @@ func (s *userService) SendRecoveryToken(ctx context.Context, email domains.Passw
 	if err = s.deps.ValidatorService().ValidateStruct(email); err != nil {
 		return
 	}
-	if !s.deps.CaptchaService().Verify(email.CaptchaID, email.CaptchaKey) {
-		err = service_errors.ErrCaptchaInvalid
-		return
-	}
 	user, err := s.userRepositories.UsersRepository().GetByEmail(ctx, email.Email)
 	if err != nil {
 		if err == service_errors.ErrDataNotFound {
@@ -329,10 +313,6 @@ func (s *userService) SendRecoveryToken(ctx context.Context, email domains.Passw
 }
 
 func (s *userService) RecoverPassword(ctx context.Context, newPassword domains.PasswordRecoveryDTO) (err error) {
-	if !s.deps.CaptchaService().Verify(newPassword.CaptchaID, newPassword.CaptchaKey) {
-		err = service_errors.ErrCaptchaInvalid
-		return
-	}
 	if err = s.deps.ValidatorService().ValidateStruct(newPassword); err != nil {
 		return
 	}

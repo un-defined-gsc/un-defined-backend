@@ -6,6 +6,8 @@ import (
 	"github.com/google/uuid"
 )
 
+//------ User ------ //
+
 type LoginDTO struct {
 	Email    string `json:"email" validate:"required,email,lowercase" example:"rsuresulcelik@gmail.com"`
 	Password string `json:"password" validate:"required" example:"12345678"`
@@ -56,4 +58,11 @@ type PasswordRecoveryDTO struct {
 	Token              string `json:"-"`
 	NewPassword        string `json:"new_password" validate:"required,min=10" example:"12345678"`
 	NewPasswordConfirm string `json:"new_password_confirm" validate:"required,min=10,eqfield=NewPassword" example:"12345678"`
+}
+
+//----- Social ------//
+
+type CategoryDTO struct {
+	ID   uuid.UUID `gorm:"primary_key" json:"id"`
+	Name string    `json:"category"`
 }
