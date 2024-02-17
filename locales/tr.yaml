@@ -1,0 +1,89 @@
+#DijiMon Merkezi Yönetim Paneli Türkçe Çeviri
+# Version: 1.0.0
+
+# Routes
+routes.private.hello: "Monitoring Time Private Routes - Pong"
+routes.public.hello: "Monitoring Time Public Routes - Pong"
+routes.v1.hello: " Monitoring Time Management API v1 - Pong"
+# SQL
+sql.no_rows: "Kayıt bulunamadı"
+
+
+
+# Location
+location.city.list.success: "Şehirler başarıyla listelendi."
+location.district.list.success: "İlçeler başarıyla listelendi."
+
+# Fiber
+fiber.not_found: "İstenen sayfa bulunamadı"
+
+# Validation
+validation.errors: "Hatalı veya eksik veri"
+
+# InternalServer
+internal.server.error: "Sunucu tarafında bilinmeyen bir hata oluştu"
+
+# User
+user.create.success: "Kullanıcı başarıyla oluşturuldu"
+user.login.success: "Başarıyla giriş yapıldı"
+user.logout.success: "Başarıyla çıkış yapıldı"
+user.shouldlogin.error: "Bu işlemi yapmadan önce giriş yapmalısın"
+user.delete.success: "Kullanıcı başarıyla silindi"
+user.activation.error: "Kullanıcı aktif değil"
+user.list.success: "Kullanıcılar başarıyla listelendi"
+user.update.success: "Kullanıcı başarıyla güncellendi"
+user.get.success: "Kullanıcı başarıyla getirildi"
+user.disable.success: "Kullanıcı başarıyla devre dışı bırakıldı"
+user.enable.success:  "Kullanıcı başarıyla aktif edildi"
+user.mail_not_verified: "Kullanıcı e-postası doğrulanmadı"
+
+
+
+# Session
+session.create.error: "Oturum oluşturulamadı"
+session.unauthentication.error: "Yetkisiz giriş"
+
+# Dashboard Data
+dashboard.data.success: "Dashboard verileri başarıyla listelendi"
+
+# Server Data
+server.data.success: "Server verileri başarıyla listelendi"
+
+# Auth
+auth.unauthorized.error: "Yetkisiz girişim!"
+
+# Topology Data
+topology.list.success: "Topoloji verisi başarıyla listelendi"
+
+
+# Problems Data
+problem.list.success: "Problemler başarıyla listelendi"
+
+# Request
+request.success: "İstek başarılı"
+request.failed: "İstek başarısız"
+
+invalid_username_or_password: "Kullanıcı adı veya şifre hatalı"
+user_email_not_verified: "Kullanıcı e-postası doğrulanmadı"
+
+# Database
+data_not_found: "Veri bulunamadı"
+
+data_duplication: "Kayıt zaten mevcut"
+
+token_invalid: "Token geçersiz"
+
+captcha_invalid: "Captcha doğrulaması geçersiz"
+
+fiber.to_many_request: "Çok fazla istek gönderildi lütfen daha sonra tekrar deneyin"
+
+request.unauthorized: "Yetkisiz girişim"
+
+invalid_old_password: "Eski şifre hatalı"
+
+invalid_otp: "OTP hatalı"
+
+user.mfa_requried: "Oturum devre dışı bırakıldı lütfen otp anahtarını girin"
+mfa_not_enabled: "Multi faktör kimlik doğrulama etkin değil"
+monitor_not_found: "Monitor bulunamadı"
+monitor_already_exists: "Monitor zaten mevcut"

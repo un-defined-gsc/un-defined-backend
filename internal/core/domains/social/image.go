@@ -1,4 +1,4 @@
-package model
+package social_domain
 
 import "github.com/google/uuid"
 

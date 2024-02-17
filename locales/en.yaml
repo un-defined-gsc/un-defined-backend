@@ -1,0 +1,89 @@
+# Monitoring Time Management Panel English Translation
+# Version: 1.0.0
+
+
+
+
+# Delivery Errors
+# Routes
+routes.private.hello: "Monitoring Time Private Routes - Pong"
+routes.public.hello: "Monitoring Time Public Routes - Pong"
+routes.v1.hello: " Monitoring Time Management API v1 - Pong"
+# SQL
+sql.no_rows: "No rows found"
+# Location
+location.city.list.success: "Cities listed successfully"
+location.district.list.success: "Districts listed successfully"
+# Fiber
+fiber.not_found: "Page not found"
+
+# Validation
+validation.errors: "Incorrect or missing data"
+
+# InternalServer
+internal.server.error: "Internal server error"
+
+# User
+user.create.success: "User created successfully"
+user.login.success: "Logged in successfully"
+user.logout.success: "Logged out successfully"
+user.shouldlogin.error: "You should login before this action"
+user.delete.success: "User deleted successfully"
+user.activation.error: "This is not an active user"
+user.list.success: "Users listed successfully"
+user.update.success: "User updated successfully"
+user.get.success": "User get successfully"
+user.disable.success: "User disabled successfully"
+user.enable.success: "User enabled successfully"
+user.mail_not_verified: "User mail not verified"
+
+
+# Session
+session.create.error: "Session couldnt created"
+session.unauthentication.error: "Unauthentication attempt"
+
+# Dashboard
+dashboard.data.success: "Dashboard data listed successfully"
+
+# Server
+server.data.success: "Server data listed successfully"
+
+# Auth
+auth.unauthorized.error: "Unauthorized attempt!"
+
+# Topology Data
+topology.list.success: "Topology data listed successfully"
+
+
+# Problems Data
+problem.list.success: "Problems listed successfully"
+
+# Request
+request.success: "Request successful"
+request.failed: "Request failed"
+
+invalid_username_or_password: "Invalid username or password"
+user_email_not_verified: "User email not verified"
+
+# Database
+data_not_found: "Data not found"
+
+data_duplication: "Data duplication"
+
+token_invalid: "Token invalid"
+captcha_invalid: "Captcha invalid"
+
+fiber.to_many_request: "To many request please try again later"
+
+# User
+request.unauthorized: "Unauthorized attempt"
+
+invalid_old_password: "Invalid old password"
+invalid_otp: "Invalid otp"
+
+user.mfa_requried: "Session disabled please entrer otp key"
+
+mfa_not_enabled: "MFA not enabled Please enable MFA"
+
+monitor_not_found: "Monitor not found"
+monitor_already_exists: "Monitor already exists"

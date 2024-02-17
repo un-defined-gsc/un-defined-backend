@@ -1,4 +1,4 @@
-package model
+package roadmap_domain
 
 import (
 	"time"
@@ -8,14 +8,13 @@ import (
 
 // PathWay ...
 type PathWay struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	Title     string    `json:"title"`
-	Body      string    `json:"body"`
-	RoadmapID uuid.UUID `json:"roadmap_id"`
+	ID         uuid.UUID `gorm:"primary_key" json:"id"`
+	CreatedAt  time.Time `json:"created_at"`
+	Title      string    `json:"title"`
+	Body       string    `json:"body"`
+	RoadmapID  uuid.UUID `json:"roadmap_id"`
 	ParentPath uuid.UUID `json:"parent_path"`
-	SubPath  []SubPath `gorm:"foreignKey:ParentPath;references:ID" json:"sub_path"`
-
+	SubPath    []SubPath `gorm:"foreignKey:ParentPath;references:ID" json:"sub_path"`
 }
 
 // PathWayDTO ...
@@ -23,7 +22,6 @@ type PathWayDTO struct {
 	ID    uuid.UUID `gorm:"primary_key" json:"id"`
 	Title string    `json:"title"`
 	Body  string    `json:"body"`
-	
 }
 
 // ToPathWay ...

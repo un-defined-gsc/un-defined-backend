@@ -1,4 +1,4 @@
-package model
+package social_domain
 
 import (
 	"time"

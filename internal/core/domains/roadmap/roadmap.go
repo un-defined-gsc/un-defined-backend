@@ -1,4 +1,4 @@
-package model
+package roadmap_domain
 
 import (
 	"time"
