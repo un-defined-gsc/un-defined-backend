@@ -3,11 +3,11 @@ package private
 import (
 	"strings"
 
-	"github.com/ProjectMonWeb/API-Service/internal/core"
-	"github.com/ProjectMonWeb/API-Service/internal/core/domains"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/response_types"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
 )
 
 type PrivateHandler struct {

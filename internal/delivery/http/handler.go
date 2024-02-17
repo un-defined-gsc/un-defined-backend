@@ -1,11 +1,11 @@
 package http
 
 import (
-	"github.com/ProjectMonWeb/API-Service/internal/config"
-	"github.com/ProjectMonWeb/API-Service/internal/core"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/session"
-	v1 "github.com/ProjectMonWeb/API-Service/internal/delivery/http/v1"
 	"github.com/gofiber/fiber/v2"
+	"github.com/un-defined-gsc/un-defined-backend/internal/config"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/session"
+	v1 "github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/v1"
 )
 
 type Handler struct {

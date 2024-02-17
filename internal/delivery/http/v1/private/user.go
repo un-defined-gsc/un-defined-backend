@@ -1,10 +1,10 @@
 package private
 
 import (
-	"github.com/ProjectMonWeb/API-Service/internal/core/domains"
-	user_domain "github.com/ProjectMonWeb/API-Service/internal/core/domains/user"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/response_types"
 	"github.com/gofiber/fiber/v2"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
+	user_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/user"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
 )
 
 func (h *PrivateHandler) initUserRoutes(root fiber.Router) {

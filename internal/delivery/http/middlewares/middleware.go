@@ -3,14 +3,14 @@ package middlewares
 import (
 	"strings"
 
-	"github.com/ProjectMonWeb/API-Service/internal/config"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/error_handler"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/response_types"
 	"github.com/gofiber/contrib/fiberi18n/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
+	"github.com/un-defined-gsc/un-defined-backend/internal/config"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/error_handler"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
 	"golang.org/x/text/language"
 )
 

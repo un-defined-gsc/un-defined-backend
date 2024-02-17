@@ -3,13 +3,13 @@ package error_handler
 import (
 	"errors"
 
-	service_errors "github.com/ProjectMonWeb/API-Service/internal/core/errors"
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/response_types"
-	"github.com/ProjectMonWeb/API-Service/pkg/validator_service"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/contrib/fiberi18n/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v5/pgconn"
+	service_errors "github.com/un-defined-gsc/un-defined-backend/internal/core/errors"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
+	"github.com/un-defined-gsc/un-defined-backend/pkg/validator_service"
 )
 
 type BaseResponse struct {

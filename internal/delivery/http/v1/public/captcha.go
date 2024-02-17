@@ -1,8 +1,8 @@
 package public
 
 import (
-	"github.com/ProjectMonWeb/API-Service/internal/delivery/http/response_types"
 	"github.com/gofiber/fiber/v2"
+	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
 )
 
 func (h *PublicHandler) initCaptcaRoutes(router fiber.Router) {

@@ -3,9 +3,9 @@ package session
 import (
 	"encoding/gob"
 
-	"github.com/ProjectMonWeb/API-Service/internal/core/domains"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 )
 
 func NewSessionStore(storage ...fiber.Storage) *session.Store {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/ProjectMonWeb/API-Service/internal/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/un-defined-gsc/un-defined-backend/internal/config"
 )
 
 type Server struct {

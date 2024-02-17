@@ -1,6 +1,6 @@
 package autoload
 
-import "github.com/ProjectMonWeb/API-Service/internal/config"
+import "github.com/un-defined-gsc/un-defined-backend/internal/config"
 
 func init() {
 	if err := config.InitializeConfig(); err != nil {
