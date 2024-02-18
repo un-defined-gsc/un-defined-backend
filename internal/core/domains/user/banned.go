@@ -7,7 +7,7 @@ import (
 )
 
 type Banned struct {
-	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
 	UserUUID  *uuid.UUID `gorm:"column:user_uuid;type:uuid"`
 	AdminUUID *uuid.UUID `gorm:"column:admin_uuid;type:uuid"`
 	Reason    string     `gorm:"column:reason"`

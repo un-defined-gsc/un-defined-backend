@@ -7,7 +7,7 @@ import (
 )
 
 type LoginLog struct {
-	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
 	UserUUID  *uuid.UUID `gorm:"column:user_uuid;type:uuid"`
 	LoginAt   *time.Time `gorm:"column:login_at"`
 	IPAddress string     `gorm:"column:ip_address"`

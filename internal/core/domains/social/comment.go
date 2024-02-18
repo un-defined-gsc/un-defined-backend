@@ -8,7 +8,7 @@ import (
 
 // Comment ...
 type Comment struct {
-	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
 	CreatedAt time.Time  `gorm:"cloumn:created_at" json:"created_at"`
 	UserID    uuid.UUID  `gorm:"cloumn:user_id" json:"user_id"`
 	PostID    uuid.UUID  `gorm:"cloumn:post_id" json:"post_id"`
