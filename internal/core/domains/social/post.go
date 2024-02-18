@@ -8,7 +8,7 @@ import (
 
 // Post is our main model for Posts
 type Post struct {
-	UUID       *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	UUID       *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
 	CategoryID uuid.UUID  `json:"category_id"`
 	UserID     uuid.UUID  `json:"user_id"`
 	CreatedAt  time.Time  `json:"created_at"`
