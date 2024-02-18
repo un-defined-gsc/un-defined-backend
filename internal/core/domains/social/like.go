@@ -8,28 +8,14 @@ import (
 
 // Like ...
 type Like struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UserID    uuid.UUID `json:"user_id"`
-	PostID    uuid.UUID `json:"post_id"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	CreatedAt time.Time  `gorm:"column:created_at" json:"created_at"`
+	UserID    uuid.UUID  `gorm:"column:user_id" json:"user_id"`
+	PostID    uuid.UUID  `gorm:"column:post_id" json:"post_id"`
 }
 
 // LikeDTO ...
 type LikeDTO struct {
-	ID       uuid.UUID `gorm:"primary_key" json:"id"`
+	UUID     uuid.UUID `gorm:"primary_key" json:"id"`
 	Username string    `json:"username"`
-}
-
-// ToLike ...
-func ToLike(likeDTO *LikeDTO) *Like {
-	return &Like{
-		UserID: likeDTO.ID,
-	}
-}
-
-// ToLikeDTO ...
-func ToLikeDTO(like *Like) *LikeDTO {
-	return &LikeDTO{
-		ID: like.ID,
-	}
 }

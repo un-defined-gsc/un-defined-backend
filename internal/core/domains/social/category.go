@@ -8,7 +8,7 @@ import (
 
 // Category ...
 type Category struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	Name      string    `json:"category"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	CreatedAt time.Time  `json:"created_at"`
+	Name      string     `gorm:"column:name" json:"category"`
 }
