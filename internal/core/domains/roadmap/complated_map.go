@@ -2,12 +2,12 @@ package roadmap_domain
 
 import (
 	"github.com/google/uuid"
-	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
+	base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 )
 
 // CompletedMap ...
 type CompletedMap struct {
-	domains.Base
+	base_domain.Base
 	UserID    uuid.UUID `json:"user_id"`
 	PathWayID uuid.UUID `json:"pathway_id"`
 	RoadmapID uuid.UUID `json:"roadmap_id"`

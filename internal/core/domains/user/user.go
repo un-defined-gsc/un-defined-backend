@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
+	base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 )
 
 type User struct {
-	domains.Base
+	base_domain.Base
 	Password      string     `gorm:"column:password" json:"password,omitempty"`
 	FirstName     string     `gorm:"column:first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
 	LastName      string     `gorm:"column:last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`

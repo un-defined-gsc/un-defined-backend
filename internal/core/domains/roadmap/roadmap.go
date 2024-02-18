@@ -1,12 +1,10 @@
 package roadmap_domain
 
-import (
-	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
-)
+import base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 
 // Roadmap ...
 type Roadmap struct {
-	domains.Base
+	base_domain.Base
 	Title string `json:"title"`
 	Body  string `json:"body"`
 }

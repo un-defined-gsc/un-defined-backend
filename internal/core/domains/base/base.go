@@ -1,4 +1,4 @@
-package domains
+package base_domain
 
 import (
 	"time"

@@ -1,11 +1,9 @@
 package social_domain
 
-import (
-	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
-)
+import base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 
 // Category ...
 type Category struct {
-	domains.Base
+	base_domain.Base
 	Name string `gorm:"column:name" json:"category"`
 }
