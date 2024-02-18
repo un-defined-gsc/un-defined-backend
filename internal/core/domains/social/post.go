@@ -11,5 +11,5 @@ type Post struct {
 	CategoryID uuid.UUID `json:"category_id"`
 	UserID     uuid.UUID `json:"user_id"`
 	Title      string    `json:"title"`
-	Body       string    `json:"body"`
+	Content    string    `json:"body"`
 }
