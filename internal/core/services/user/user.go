@@ -66,7 +66,7 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 		return
 	}
 	sess = &domains.SessionDTO{
-		UUID:           user.UUID,
+		ID:             user.ID,
 		EnabledSession: true,
 		Email:          user.Email,
 		EmailVerified:  user.EmailVerified,
@@ -81,14 +81,14 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 		CreatedAt:      user.CreatedAt,
 	}
 	if user.MFAEnabled {
-		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserUUID(ctx, *user.UUID)
+		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserID(ctx, *user.ID)
 		if err != nil {
 			return nil, err
 		}
 		sess.Key = mfaSet.Key
 		sess.EnabledSession = false
 	}
-	if err = s.userRepositories.UsersRepository().UpdateLastLoginByUUID(ctx, *user.UUID); err != nil {
+	if err = s.userRepositories.UsersRepository().UpdateLastLoginByID(ctx, *user.ID); err != nil {
 		return
 	}
 	nowTime := time.Now().UTC()
@@ -165,7 +165,7 @@ func (s *userService) VerifyEmail(ctx context.Context, token string) (err error)
 		return
 
 	}
-	err = s.userRepositories.UsersRepository().UpdateEmailByUUID(ctx, newMail.UserUUID, newMail.NewEmail)
+	err = s.userRepositories.UsersRepository().UpdateEmailByID(ctx, newMail.UserID, newMail.NewEmail)
 	if err != nil {
 		return
 	}
@@ -189,7 +189,7 @@ func (s *userService) ChangeEmail(ctx context.Context, newEmail domains.EmailCah
 	if err = s.deps.ValidatorService().ValidateStruct(newEmail); err != nil {
 		return
 	}
-	user, err := s.userRepositories.UsersRepository().GetByUUID(ctx, newEmail.UserId)
+	user, err := s.userRepositories.UsersRepository().GetByID(ctx, newEmail.UserId)
 	if err != nil {
 		return
 	}
@@ -203,7 +203,7 @@ func (s *userService) ChangeEmail(ctx context.Context, newEmail domains.EmailCah
 	}
 	key := randomstr.RandStringBytesMaskImpr(48)
 	err = s.userRepositories.TokensRepository().Create(ctx, &user_domain.Token{
-		UserUUID:  newEmail.UserId,
+		UserID:    newEmail.UserId,
 		NewEmail:  newEmail.Email,
 		OldMail:   user.Email,
 		FirstName: user.FirstName,
@@ -249,7 +249,7 @@ func (s *userService) ChangePassword(ctx context.Context, password domains.Passw
 	if err = s.deps.ValidatorService().ValidateStruct(password); err != nil {
 		return
 	}
-	user, err := s.userRepositories.UsersRepository().GetByUUID(ctx, password.UserId)
+	user, err := s.userRepositories.UsersRepository().GetByID(ctx, password.UserId)
 	if err != nil {
 		return
 	}
@@ -265,11 +265,11 @@ func (s *userService) ChangePassword(ctx context.Context, password domains.Passw
 	if err != nil {
 		return
 	}
-	return s.userRepositories.UsersRepository().UpdatePasswordByUUID(ctx, password.UserId, hash)
+	return s.userRepositories.UsersRepository().UpdatePasswordByID(ctx, password.UserId, hash)
 }
 
-func (s *userService) GetMe(ctx context.Context, userUUID uuid.UUID) (user *user_domain.User, err error) {
-	user, err = s.userRepositories.UsersRepository().GetByUUID(ctx, userUUID)
+func (s *userService) GetMe(ctx context.Context, userID uuid.UUID) (user *user_domain.User, err error) {
+	user, err = s.userRepositories.UsersRepository().GetByID(ctx, userID)
 	user.Password = ""
 	return
 }
@@ -299,7 +299,7 @@ func (s *userService) SendRecoveryToken(ctx context.Context, email domains.Passw
 	}
 	token := randomstr.RandStringBytesMaskImpr(48)
 	err = s.userRepositories.TokensRepository().Create(ctx, &user_domain.Token{
-		UserUUID:  *user.UUID,
+		UserID:    *user.ID,
 		Token:     token,
 		ExpiresAt: time.Now().UTC().Add(time.Minute * 15),
 		CreatedAt: time.Now().UTC(),
@@ -327,7 +327,7 @@ func (s *userService) RecoverPassword(ctx context.Context, newPassword domains.P
 	if err != nil {
 		return
 	}
-	err = s.userRepositories.UsersRepository().UpdatePasswordByUUID(ctx, user.UserUUID, hash)
+	err = s.userRepositories.UsersRepository().UpdatePasswordByID(ctx, user.UserID, hash)
 	if err != nil {
 		return
 	}
@@ -349,13 +349,13 @@ func (s *userService) EnableSession(ctx context.Context, session *domains.Sessio
 	return
 }
 
-func (s *userService) MFAToggle(ctx context.Context, userUUID uuid.UUID) (status bool, err error) {
-	user, err := s.userRepositories.UsersRepository().GetByUUID(ctx, userUUID)
+func (s *userService) MFAToggle(ctx context.Context, userID uuid.UUID) (status bool, err error) {
+	user, err := s.userRepositories.UsersRepository().GetByID(ctx, userID)
 	if err != nil {
 		return
 	}
 	if user.MFAEnabled {
-		err = s.userRepositories.MFAsRepository().DeleteByUserUUID(ctx, userUUID)
+		err = s.userRepositories.MFAsRepository().DeleteByUserID(ctx, userID)
 		if err != nil {
 			return
 		}
@@ -367,7 +367,7 @@ func (s *userService) MFAToggle(ctx context.Context, userUUID uuid.UUID) (status
 		}
 		t := time.Now().UTC()
 		err = s.userRepositories.MFAsRepository().Create(ctx, &user_domain.MFASetting{
-			UserUUID:  *user.UUID,
+			UserID:    *user.ID,
 			Key:       &otpURL,
 			CreatedAt: &t,
 		})
@@ -379,8 +379,8 @@ func (s *userService) MFAToggle(ctx context.Context, userUUID uuid.UUID) (status
 	return
 }
 
-func (s *userService) GetMFA(ctx context.Context, userUUID uuid.UUID) (mfa *user_domain.MFASetting, err error) {
-	mfa, err = s.userRepositories.MFAsRepository().GetByUserUUID(ctx, userUUID)
+func (s *userService) GetMFA(ctx context.Context, userID uuid.UUID) (mfa *user_domain.MFASetting, err error) {
+	mfa, err = s.userRepositories.MFAsRepository().GetByUserID(ctx, userID)
 	if err != nil {
 		if err == service_errors.ErrDataNotFound {
 			err = service_errors.ErrMFANotEnabled

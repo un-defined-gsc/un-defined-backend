@@ -43,5 +43,7 @@ func (s *Server) Run(apiApp *fiber.App) error {
 }
 
 func (s *Server) Shutdown(ctx context.Context) error {
-	return s.app.ShutdownWithContext(ctx)
+	ctx2, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	return s.app.ShutdownWithContext(ctx2)
 }

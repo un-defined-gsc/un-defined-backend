@@ -12,16 +12,16 @@ type IUsersRepository interface {
 	// User Table Commands //
 	Create(ctx context.Context, user *user_domain.User) (err error)
 	Update(ctx context.Context, newUser *user_domain.User) (err error)
-	UpdateEmailVerifiedTrueByUUID(ctx context.Context, userUUID uuid.UUID) (err error)
-	UpdateDisabledByUUID(ctx context.Context, userUUID uuid.UUID, newDisabled bool) (err error)
-	UpdateMasterAdminByUUID(ctx context.Context, userUUID uuid.UUID, newMasterAdmin bool) (err error)
-	UpdatePasswordByUUID(ctx context.Context, userUUID uuid.UUID, newPassword string) (err error)
-	UpdateEmailByUUID(ctx context.Context, userUUID uuid.UUID, newEmail string) (err error)
-	UpdateLastLoginByUUID(ctx context.Context, userUUID uuid.UUID) (err error)
+	UpdateEmailVerifiedTrueByID(ctx context.Context, userID uuid.UUID) (err error)
+	UpdateDisabledByID(ctx context.Context, userID uuid.UUID, newDisabled bool) (err error)
+	UpdateMasterAdminByID(ctx context.Context, userID uuid.UUID, newMasterAdmin bool) (err error)
+	UpdatePasswordByID(ctx context.Context, userID uuid.UUID, newPassword string) (err error)
+	UpdateEmailByID(ctx context.Context, userID uuid.UUID, newEmail string) (err error)
+	UpdateLastLoginByID(ctx context.Context, userID uuid.UUID) (err error)
 	// End User Table Commands //
 
 	// User Table Queries //
-	GetByUUID(ctx context.Context, userUUID uuid.UUID) (user *user_domain.User, err error)
+	GetByID(ctx context.Context, userID uuid.UUID) (user *user_domain.User, err error)
 	GetByEmail(ctx context.Context, email string) (user *user_domain.User, err error)
 	FindAll(ctx context.Context, searchUser user_domain.User, limit, offset uint64) (users []user_domain.User, count uint64, err error)
 	GetCountByEmail(ctx context.Context, email string) (count uint64, err error)
@@ -36,11 +36,11 @@ type IBannedsRepository interface {
 	// Banned Table Commands //
 	Create(ctx context.Context, banned *user_domain.Banned) (err error)
 	Update(ctx context.Context, newBanned *user_domain.Banned) (err error)
-	DeleteByUUID(ctx context.Context, bannedUUID uuid.UUID) (err error)
-	DeleteByUserUUID(ctx context.Context, userUUID uuid.UUID) (err error)
+	DeleteByID(ctx context.Context, bannedID uuid.UUID) (err error)
+	DeleteByUserID(ctx context.Context, userID uuid.UUID) (err error)
 	// End Banned Table Commands //
 	// Banned Table Queries //
-	GetByUserUUID(ctx context.Context, userUUID uuid.UUID) (banned *user_domain.Banned, err error)
+	GetByUserID(ctx context.Context, userID uuid.UUID) (banned *user_domain.Banned, err error)
 	// End Banned Table Queries //
 }
 
@@ -69,12 +69,12 @@ type IMFAsRepository interface {
 	// MFA Ops
 	Create(ctx context.Context, mfaSetting *user_domain.MFASetting) (err error)
 	Update(ctx context.Context, newMFASetting *user_domain.MFASetting) (err error)
-	DeleteByUserUUID(ctx context.Context, userUUID uuid.UUID) (err error)
-	UpdateLogUUIDByUUID(ctx context.Context, mfaSettingUUID, newLogUUID uuid.UUID) (err error)
+	DeleteByUserID(ctx context.Context, userID uuid.UUID) (err error)
+	UpdateLogIDByID(ctx context.Context, mfaSettingID, newLogID uuid.UUID) (err error)
 	// End MFA Ops
 
 	// MFA Table Queries //
-	GetByUserUUID(ctx context.Context, userUUID uuid.UUID) (mfaSetting *user_domain.MFASetting, err error)
+	GetByUserID(ctx context.Context, userID uuid.UUID) (mfaSetting *user_domain.MFASetting, err error)
 	// End MFA Table Queries //
 }
 
@@ -96,7 +96,7 @@ type IUsersRepositories interface {
 // 	// End Profile Table Commands //
 
 // 	// Profile Table Queries //
-// 	GetByUserUUID(ctx context.Context, userUUID uuid.UUID) (profile *user_domain.Profile, err error)
+// 	GetByUserID(ctx context.Context, userID uuid.UUID) (profile *user_domain.Profile, err error)
 // 	// End Profile Table Queries //
 // }
 
@@ -104,7 +104,7 @@ type IUsersRepositories interface {
 // type IAddressesRepository interface {
 // 	// Address Table Commands //
 // 	Create(ctx context.Context, address *user_domain.Address) (err error)
-// 	DeleteByUUID(ctx context.Context, addressUUID uuid.UUID) (err error)
+// 	DeleteByID(ctx context.Context, addressID uuid.UUID) (err error)
 // 	Update(ctx context.Context, newAddress *user_domain.Address) (err error)
 // 	// End Address Table Commands //
 // 	// Address Table Queries //
@@ -118,9 +118,9 @@ type IUsersRepositories interface {
 // type IEmailsRepository interface {
 // 	// Mail Table Commands //
 // 	Create(ctx context.Context, email *user_domain.Email) (err error)
-// 	DeleteByUUID(ctx context.Context, emailUUID uuid.UUID) (err error)
-// 	UpdatePrimaryEmailByUserUUIDAndUUID(ctx context.Context, userUUID, emailUUID uuid.UUID) (err error)
-// 	UpdatePrimaryAndVerifedLogUUIDByUUID(ctx context.Context, emailUUID, newVerifiedLogUUID uuid.UUID) (err error)
+// 	DeleteByID(ctx context.Context, emailID uuid.UUID) (err error)
+// 	UpdatePrimaryEmailByUserIDAndID(ctx context.Context, userID, emailID uuid.UUID) (err error)
+// 	UpdatePrimaryAndVerifedLogIDByID(ctx context.Context, emailID, newVerifiedLogID uuid.UUID) (err error)
 // 	// End Mail Table Commands //
 
 // 	// Emails Table Queries //
@@ -133,9 +133,9 @@ type IUsersRepositories interface {
 // type IPhonesRepository interface {
 // 	// Phone Table Commands //
 // 	Create(ctx context.Context, phone *user_domain.Phone) (err error)
-// 	DeleteByUUID(ctx context.Context, phoneUUID uuid.UUID) (err error)
-// 	UpdatePrimaryPhoneByUserUUIDAndUUID(ctx context.Context, userUUID, phoneUUID uuid.UUID) (err error)
-// 	UpdatePrimaryAndVerifedLogUUIDByUUID(ctx context.Context, phoneUUID, newVerifiedLogUUID uuid.UUID) (err error)
+// 	DeleteByID(ctx context.Context, phoneID uuid.UUID) (err error)
+// 	UpdatePrimaryPhoneByUserIDAndUUID(ctx context.Context, userID, phoneID uuid.UUID) (err error)
+// 	UpdatePrimaryAndVerifedLogIDByUUID(ctx context.Context, phoneID, newVerifiedLogID uuid.UUID) (err error)
 // 	// End Phone Table Commands //
 
 // 	// Phones Table Queries //
