@@ -59,10 +59,3 @@ type PasswordRecoveryDTO struct {
 	NewPassword        string `json:"new_password" validate:"required,min=10" example:"12345678"`
 	NewPasswordConfirm string `json:"new_password_confirm" validate:"required,min=10,eqfield=NewPassword" example:"12345678"`
 }
-
-//----- Social ------//
-
-type CategoryDTO struct {
-	ID   uuid.UUID `gorm:"primary_key" json:"id"`
-	Name string    `json:"category"`
-}
