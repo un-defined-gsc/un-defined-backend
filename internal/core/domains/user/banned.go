@@ -4,11 +4,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
+	base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 )
 
 type Banned struct {
-	domains.Base
+	base_domain.Base
 	UserID    *uuid.UUID `gorm:"column:user_id;type:uuid"`
 	AdminID   *uuid.UUID `gorm:"column:admin_id;type:uuid"`
 	Reason    string     `gorm:"column:reason"`
