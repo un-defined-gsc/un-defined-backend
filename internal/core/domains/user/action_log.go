@@ -15,3 +15,7 @@ type ActionLog struct {
 	IPAddress  string     `gorm:"column:ip_address"`
 	UserAgent  string     `gorm:"column:user_agent"`
 }
+
+func (ActionLog) TableName() string {
+	return "t_action_logs"
+}

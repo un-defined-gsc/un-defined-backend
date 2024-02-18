@@ -30,6 +30,7 @@ func Run(cfg *config.Config) {
 	//gormclient
 	db, err := db_adapters.NewGormClient(cfg.Database.Host, cfg.Database.Port, cfg.Database.User, cfg.Database.Password, cfg.Database.Database)
 	if err != nil {
+		panic(err)
 	}
 	rdb, err := db_adapters.NewRedisClient(cfg.Redis.Host, cfg.Redis.Port, cfg.Redis.Password)
 	if err != nil {

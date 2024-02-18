@@ -1,6 +1,9 @@
 package user_gorm_repositories
 
 import (
+	"context"
+
+	"github.com/google/uuid"
 	user_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/user"
 	user_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/user"
 	gorm_migration "github.com/un-defined-gsc/un-defined-backend/internal/repositories/gorm_repositories"
@@ -17,7 +20,28 @@ func NewBannedsRepository(db *gorm.DB) user_ports.IBannedsRepository {
 	return repo
 }
 
-func (r *bannedRepository) Migrate() error {
+func (r *bannedRepository) Create(ctx context.Context, banned *user_domain.Banned) (err error) {
+	return
+}
+
+func (r *bannedRepository) Update(ctx context.Context, newBanned *user_domain.Banned) (err error) {
+	return
+}
+
+func (r *bannedRepository) DeleteByID(ctx context.Context, bannedID uuid.UUID) (err error) {
+	return
+}
+
+func (r *bannedRepository) DeleteByUserID(ctx context.Context, userID uuid.UUID) (err error) {
+	return
+}
+
+func (r *bannedRepository) GetByUserID(ctx context.Context, userID uuid.UUID) (banned *user_domain.Banned, err error) {
+	return
+}
+
+func (r *bannedRepository) Migrate() (err error) {
 	// Veri tabanı tablolarını oluştur
-	return r.db.AutoMigrate(&user_domain.Banned{})
+	err = r.db.AutoMigrate(&user_domain.Banned{})
+	return
 }

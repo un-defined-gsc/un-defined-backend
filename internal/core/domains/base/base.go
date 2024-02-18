@@ -7,6 +7,6 @@ import (
 )
 
 type Base struct {
-	ID        *uuid.UUID `gorm:"column:id,primaryKey;type:uuid;default:uuid_generate_v4()" json:"-"`
-	CreatedAt *time.Time `gorm:"column:created_at;default:now()" json:"-"`
+	ID        *uuid.UUID `gorm:"column:id;primaryKey;type:UUID;default:uuid_generate_v4()" json:"id"`
+	CreatedAt *time.Time `gorm:"column:created_at;type:timestamp;default:CURRENT_TIMESTAMP" json:"created_at"`
 }
