@@ -9,9 +9,13 @@ import (
 
 type Banned struct {
 	base_domain.Base
-	UserID    *uuid.UUID `gorm:"column:user_id;type:uuid"`
-	AdminID   *uuid.UUID `gorm:"column:admin_id;type:uuid"`
-	Reason    string     `gorm:"column:reason"`
-	Permanent bool       `gorm:"column:permanent"`
-	ExpiresAt *time.Time `gorm:"column:expires_at"`
+	UserID    *uuid.UUID `gorm:"column:user_id;type:UUID;NOT NULL"`
+	AdminID   *uuid.UUID `gorm:"column:admin_id;type:UUID;NOT NULL"`
+	Reason    string     `gorm:"column:reason;type:TEXT;NOT NULL"`
+	Permanent bool       `gorm:"column:permanent;type:BOOLEAN;NOT NULL"`
+	ExpiresAt *time.Time `gorm:"column:expires_at;type:TIMESTAMP;NOT NULL"`
+}
+
+func (Banned) TableName() string {
+	return "t_banneds"
 }
