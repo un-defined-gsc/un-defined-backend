@@ -7,29 +7,15 @@ import (
 )
 
 type Tag struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UserID    uuid.UUID `json:"user_id"`
-	PostID    uuid.UUID `json:"post_id"`
-	Tag       string    `json:"tag"`
+	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	CreatedAt time.Time  `gorm:"column:created_at" json:"created_at"`
+	UserID    uuid.UUID  `gorm:"column:user_id" json:"user_id"`
+	PostID    uuid.UUID  `gorm:"column:post_id" json:"post_id"`
+	Tag       string     `gorm:"column:tag" json:"tag"`
 }
 
 type TagDTO struct {
-	ID       uuid.UUID `gorm:"primary_key" json:"id"`
-	Username string    `json:"username"`
-	Tag      string    `json:"tag"`
-}
-
-func ToTag(tagDTO *TagDTO) *Tag {
-	return &Tag{
-		UserID: tagDTO.ID,
-		Tag:    tagDTO.Tag,
-	}
-}
-
-func ToTagDTO(tag *Tag) *TagDTO {
-	return &TagDTO{
-		ID:  tag.ID,
-		Tag: tag.Tag,
-	}
+	UUID     *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid" json:"uuid"`
+	Username string     `json:"username"`
+	Tag      string     `json:"tag"`
 }
