@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	UUID          *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
+	ID            *uuid.UUID `gorm:"column:id,primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
 	Password      string     `gorm:"column:password" json:"password,omitempty"`
 	FirstName     string     `gorm:"column:first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
 	LastName      string     `gorm:"column:last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`

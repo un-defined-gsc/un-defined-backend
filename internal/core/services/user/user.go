@@ -66,7 +66,7 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 		return
 	}
 	sess = &domains.SessionDTO{
-		UUID:           user.UUID,
+		ID:             user.ID,
 		EnabledSession: true,
 		Email:          user.Email,
 		EmailVerified:  user.EmailVerified,
@@ -81,14 +81,14 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 		CreatedAt:      user.CreatedAt,
 	}
 	if user.MFAEnabled {
-		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserUUID(ctx, *user.UUID)
+		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserUUID(ctx, *user.ID)
 		if err != nil {
 			return nil, err
 		}
 		sess.Key = mfaSet.Key
 		sess.EnabledSession = false
 	}
-	if err = s.userRepositories.UsersRepository().UpdateLastLoginByUUID(ctx, *user.UUID); err != nil {
+	if err = s.userRepositories.UsersRepository().UpdateLastLoginByUUID(ctx, *user.ID); err != nil {
 		return
 	}
 	nowTime := time.Now().UTC()
@@ -165,7 +165,7 @@ func (s *userService) VerifyEmail(ctx context.Context, token string) (err error)
 		return
 
 	}
-	err = s.userRepositories.UsersRepository().UpdateEmailByUUID(ctx, newMail.UserUUID, newMail.NewEmail)
+	err = s.userRepositories.UsersRepository().UpdateEmailByUUID(ctx, newMail.UserID, newMail.NewEmail)
 	if err != nil {
 		return
 	}
@@ -203,7 +203,7 @@ func (s *userService) ChangeEmail(ctx context.Context, newEmail domains.EmailCah
 	}
 	key := randomstr.RandStringBytesMaskImpr(48)
 	err = s.userRepositories.TokensRepository().Create(ctx, &user_domain.Token{
-		UserUUID:  newEmail.UserId,
+		UserID:    newEmail.UserId,
 		NewEmail:  newEmail.Email,
 		OldMail:   user.Email,
 		FirstName: user.FirstName,
@@ -299,7 +299,7 @@ func (s *userService) SendRecoveryToken(ctx context.Context, email domains.Passw
 	}
 	token := randomstr.RandStringBytesMaskImpr(48)
 	err = s.userRepositories.TokensRepository().Create(ctx, &user_domain.Token{
-		UserUUID:  *user.UUID,
+		UserID:    *user.ID,
 		Token:     token,
 		ExpiresAt: time.Now().UTC().Add(time.Minute * 15),
 		CreatedAt: time.Now().UTC(),
@@ -327,7 +327,7 @@ func (s *userService) RecoverPassword(ctx context.Context, newPassword domains.P
 	if err != nil {
 		return
 	}
-	err = s.userRepositories.UsersRepository().UpdatePasswordByUUID(ctx, user.UserUUID, hash)
+	err = s.userRepositories.UsersRepository().UpdatePasswordByUUID(ctx, user.UserID, hash)
 	if err != nil {
 		return
 	}
@@ -367,7 +367,7 @@ func (s *userService) MFAToggle(ctx context.Context, userUUID uuid.UUID) (status
 		}
 		t := time.Now().UTC()
 		err = s.userRepositories.MFAsRepository().Create(ctx, &user_domain.MFASetting{
-			UserUUID:  *user.UUID,
+			UserID:    *user.ID,
 			Key:       &otpURL,
 			CreatedAt: &t,
 		})

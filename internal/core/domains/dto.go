@@ -21,20 +21,20 @@ type RegisterDTO struct {
 }
 
 type SessionDTO struct {
-	UUID           *uuid.UUID `db:"uuid"`
-	EnabledSession bool       `db:"enabled_session"`
-	Email          string     `db:"email"`
-	FirstName      string     `db:"first_name"`
-	LastName       string     `db:"last_name"`
-	EmailVerified  bool       `db:"email_verified"`
-	MasterAdmin    bool       `db:"master_admin"`
-	Lang           string     `db:"lang"`
-	MFAEnabled     bool       `db:"mfa_enabled"`
-	Disabled       bool       `db:"disabled"`
-	DisabledAt     *time.Time `db:"disabled_at"`
-	LastLogin      *time.Time `db:"last_login"`
-	CreatedAt      *time.Time `db:"created_at"`
-	Key            *string    `db:"key"`
+	ID             *uuid.UUID `gorm:"column:id"`
+	EnabledSession bool       `gorm:"column:enabled_session"`
+	Email          string     `gorm:"column:email"`
+	FirstName      string     `gorm:"column:first_name"`
+	LastName       string     `gorm:"column:last_name"`
+	EmailVerified  bool       `gorm:"column:email_verified"`
+	MasterAdmin    bool       `gorm:"column:master_admin"`
+	Lang           string     `gorm:"column:lang"`
+	MFAEnabled     bool       `gorm:"column:mfa_enabled"`
+	Disabled       bool       `gorm:"column:disabled"`
+	DisabledAt     *time.Time `gorm:"column:disabled_at"`
+	LastLogin      *time.Time `gorm:"column:last_login"`
+	CreatedAt      *time.Time `gorm:"column:created_at"`
+	Key            *string    `gorm:"column:key"`
 }
 
 type PasswordChangeDTO struct {

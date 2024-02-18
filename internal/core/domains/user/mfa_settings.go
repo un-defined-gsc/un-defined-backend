@@ -8,7 +8,7 @@ import (
 )
 
 type MFASetting struct {
-	UserUUID  uuid.UUID    `gorm:"column:user_uuid;type:uuid;default:uuid_generate_v4()"`
+	UserID    uuid.UUID    `gorm:"column:user_id;type:uuid"`
 	Key       *string      `gorm:"column:key"`
 	CreatedAt *time.Time   `gorm:"column:created_at"`
 	KeyImage  bytes.Buffer `gorm:"-:all"`

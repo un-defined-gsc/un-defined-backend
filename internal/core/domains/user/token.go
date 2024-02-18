@@ -8,7 +8,7 @@ import (
 )
 
 type Token struct {
-	UserUUID  uuid.UUID
+	UserID    uuid.UUID
 	NewEmail  string
 	OldMail   string
 	FirstName string

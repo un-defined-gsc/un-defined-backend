@@ -7,9 +7,9 @@ import (
 )
 
 type Banned struct {
-	UUID      *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
-	UserUUID  *uuid.UUID `gorm:"column:user_uuid;type:uuid"`
-	AdminUUID *uuid.UUID `gorm:"column:admin_uuid;type:uuid"`
+	ID        *uuid.UUID `gorm:"column:id,primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
+	UserID    *uuid.UUID `gorm:"column:user_id;type:uuid"`
+	AdminID   *uuid.UUID `gorm:"column:admin_id;type:uuid"`
 	Reason    string     `gorm:"column:reason"`
 	Permanent bool       `gorm:"column:permanent"`
 	ExpiresAt *time.Time `gorm:"column:expires_at"`
