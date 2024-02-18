@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	social_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/social"
 )
 
 //------ User ------ //
@@ -66,3 +67,8 @@ type CategoryDTO struct {
 	ID   uuid.UUID `gorm:"primary_key" json:"id"`
 	Name string    `json:"category"`
 }
+
+
+type  PostDTO struct {
+	ID          uuid.UUID `gorm:"column:id" json:"id"`
+	social_domain.Category  
