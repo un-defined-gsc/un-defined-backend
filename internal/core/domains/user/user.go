@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 )
 
 type User struct {
-	UUID          *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
+	domains.Base
 	Password      string     `gorm:"column:password" json:"password,omitempty"`
 	FirstName     string     `gorm:"column:first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
 	LastName      string     `gorm:"column:last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`
@@ -18,7 +18,6 @@ type User struct {
 	MasterAdmin   bool       `gorm:"column:master_admin" json:"-"`
 	Banned        bool       `gorm:"column:banned" json:"-"`
 	MFAEnabled    bool       `gorm:"column:mfa_enabled" json:"mfa_enabled"`
-	CreatedAt     *time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt     *time.Time `gorm:"column:updated_at" json:"-"`
 	Disabled      bool       `gorm:"column:disabled" json:"-"`
 	DisabledAt    *time.Time `gorm:"column:disabled_at" json:"-"`

@@ -16,7 +16,8 @@ type IPostsRepository interface {
 	// End Post Table Commands //
 
 	// Post Table Queries //
-
+	GetByUUID(ctx context.Context, postUUID uuid.UUID) (post *social_domain.Post, err error)
+	GetAll(ctx context.Context, limit, offset uint64) (posts []*social_domain.Post, err error)
 	// End Post Table Queries //
 
 }

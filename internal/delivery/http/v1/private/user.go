@@ -30,7 +30,7 @@ func (h *PrivateHandler) initUserRoutes(root fiber.Router) {
 // @Router /private/user/me [get]
 func (h *PrivateHandler) GetUserMe(c *fiber.Ctx) error {
 	user := c.Locals("user").(domains.SessionDTO)
-	userdb, err := h.coreAdapter.UsersServices().UsersService().GetMe(c.Context(), *user.UUID)
+	userdb, err := h.coreAdapter.UsersServices().UsersService().GetMe(c.Context(), *user.ID)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (h *PrivateHandler) UpdateUserMe(c *fiber.Ctx) error {
 		return err
 	}
 	usersess := c.Locals("user").(domains.SessionDTO)
-	user.UUID = usersess.UUID
+	user.ID = usersess.ID
 	err := h.coreAdapter.UsersServices().UsersService().UpdateMe(c.Context(), user)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (h *PrivateHandler) ChangePassword(c *fiber.Ctx) error {
 		return err
 	}
 	usersess := c.Locals("user").(domains.SessionDTO)
-	password.UserId = *usersess.UUID
+	password.UserId = *usersess.ID
 	err := h.coreAdapter.UsersServices().UsersService().ChangePassword(c.Context(), password)
 	if err != nil {
 		return err
@@ -107,7 +107,7 @@ func (h *PrivateHandler) ChangeEmail(c *fiber.Ctx) error {
 		return err
 	}
 	usersess := sess.Get("user").(domains.SessionDTO)
-	email.UserId = *usersess.UUID
+	email.UserId = *usersess.ID
 	err = h.coreAdapter.UsersServices().UsersService().ChangeEmail(c.Context(), email)
 	if err != nil {
 		return err
@@ -150,7 +150,7 @@ func (h *PrivateHandler) ChangeEmail(c *fiber.Ctx) error {
 // @Router /private/user/me/mfa/qr [get]
 func (h *PrivateHandler) GetMFAQR(c *fiber.Ctx) error {
 	usersess := c.Locals("user").(domains.SessionDTO)
-	mfa, err := h.coreAdapter.UsersServices().UsersService().GetMFA(c.Context(), *usersess.UUID)
+	mfa, err := h.coreAdapter.UsersServices().UsersService().GetMFA(c.Context(), *usersess.ID)
 	if err != nil {
 		return err
 	}
@@ -168,7 +168,7 @@ func (h *PrivateHandler) GetMFAQR(c *fiber.Ctx) error {
 // @Router /private/user/me/mfa/toggle [put]
 func (h *PrivateHandler) MFAToggle(c *fiber.Ctx) error {
 	usersess := c.Locals("user").(domains.SessionDTO)
-	status, err := h.coreAdapter.UsersServices().UsersService().MFAToggle(c.Context(), *usersess.UUID)
+	status, err := h.coreAdapter.UsersServices().UsersService().MFAToggle(c.Context(), *usersess.ID)
 	if err != nil {
 		return err
 	}

@@ -4,11 +4,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 )
 
 type ActionLog struct {
-	UUID       *uuid.UUID `gorm:"column:uuid,primaryKey;type:uuid;default:uuid_generate_v4()" json:"uuid"`
-	UserUUID   *uuid.UUID `gorm:"column:user_uuid;type:uuid"`
+	domains.Base
+	UserID     *uuid.UUID `gorm:"column:user_id;type:uuid"`
 	ActionAt   *time.Time `gorm:"column:action_at"`
 	ActionSlug string     `gorm:"column:action_slug"`
 	IPAddress  string     `gorm:"column:ip_address"`
