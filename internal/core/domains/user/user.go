@@ -19,7 +19,7 @@ type User struct {
 	EmailVerified bool       `db:"email_verified" json:"email_verified"`
 	MasterAdmin   bool       `db:"master_admin" json:"-"`
 	Banned        bool       `db:"banned" json:"-"`
-	Gender        string     `db:"gender" json:"gender" validate:"required,oneof=male female other" example:"male"`
+	Gender        string     `db:"gender" json:"gender" validate:"required,oneof=male female not other" example:"male"`
 	Appeal        *string    `db:"appeal" json:"appeal" validate:"omitempty" example:"I am a Attack Helicopter 🚁"`
 	MFAEnabled    bool       `db:"mfa_enabled" json:"mfa_enabled"`
 	Disabled      bool       `db:"disabled" json:"-"`
