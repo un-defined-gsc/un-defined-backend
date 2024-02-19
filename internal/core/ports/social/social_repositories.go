@@ -23,6 +23,7 @@ type IPostsRepository interface {
 	GetByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error)
 	GetByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error)
 	GetByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error)
+	GetByUserIDAndPostID(ctx context.Context, userID, postID uuid.UUID) (post *social_domain.Post, err error)
 
 	// End Post Table Queries //
 

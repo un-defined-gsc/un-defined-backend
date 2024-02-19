@@ -69,6 +69,7 @@ func (h *PrivateHandler) UpdatePost(c *fiber.Ctx) error {
 // @Router /private/post/{id} [delete]
 func (h *PrivateHandler) DeletePost(c *fiber.Ctx) error {
 	postID := c.Params("id")
+
 	newPostID := uuid.MustParse(postID)
 	err := h.coreAdapter.SocialServices().PostsService().DeletePost(c.Context(), newPostID)
 	if err != nil {

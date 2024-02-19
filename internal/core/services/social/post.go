@@ -73,6 +73,12 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Pos
 
 func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID) (err error) {
 
+	var userID uuid.UUID // c.Local("user").(*jwt.Token).Claims.(jwt.MapClaims)["id"].(string)
+	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
+	if err != nil {
+		return
+	}
+
 	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID)
 }
 
