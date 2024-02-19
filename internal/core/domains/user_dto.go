@@ -18,7 +18,7 @@ type RegisterDTO struct {
 	Lang      string  `json:"lang" validate:"required,oneof=en tr" example:"tr"` //🤘
 	Email     string  `json:"email" validate:"required,email,lowercase" example:"example@example.local"`
 	Password  string  `json:"password" validate:"required,min=10" example:"12345678910"`
-	Gender    string  `json:"gender" validate:"required,oneof=male female other" example:"male"`
+	Gender    string  `json:"gender" validate:"required,oneof=male female not other" example:"male"`
 	Appeal    *string `json:"appeal" validate:"omitempty" example:"I am a Attack Helicopter 🚁"`
 }
 
