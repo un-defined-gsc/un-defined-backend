@@ -10,7 +10,7 @@ database:
     user: change-me
     password: change-me
     database: change-me
-
+    migrations_path: ./migrations
 redis:
     host: redis
     port: 6379

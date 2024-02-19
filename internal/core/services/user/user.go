@@ -118,6 +118,8 @@ func (s *userService) Register(ctx context.Context, register domains.RegisterDTO
 		Lang:      register.Lang,
 		Email:     register.Email,
 		Password:  hash,
+		Gender:    register.Gender,
+		Appeal:    register.Appeal,
 	}
 	key := randomstr.RandStringBytesMaskImpr(48)
 

@@ -1,0 +1,484 @@
+basePath: /api/v1
+definitions:
+  domains.EmailCahangeDTO:
+    properties:
+      email:
+        example: test@example.com
+        type: string
+      password:
+        example: "12345678"
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  domains.LoginDTO:
+    properties:
+      email:
+        example: example@example.local
+        type: string
+      password:
+        example: "12345678910"
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  domains.PasswordChangeDTO:
+    properties:
+      new_password:
+        example: "12345678"
+        minLength: 10
+        type: string
+      new_password_confirm:
+        example: "12345678"
+        minLength: 10
+        type: string
+      old_password:
+        example: "12345678"
+        minLength: 10
+        type: string
+    required:
+    - new_password
+    - new_password_confirm
+    - old_password
+    type: object
+  domains.PasswordRecoveryDTO:
+    properties:
+      new_password:
+        example: "12345678"
+        minLength: 10
+        type: string
+      new_password_confirm:
+        example: "12345678"
+        minLength: 10
+        type: string
+    required:
+    - new_password
+    - new_password_confirm
+    type: object
+  domains.PasswordRecoverySendDTO:
+    properties:
+      email:
+        example: rsuresulcelik@gmail.com
+        type: string
+    required:
+    - email
+    type: object
+  domains.RegisterDTO:
+    properties:
+      appeal:
+        example: "I am a Attack Helicopter \U0001F681"
+        type: string
+      email:
+        example: example@example.local
+        type: string
+      first_name:
+        example: Resul
+        type: string
+      gender:
+        enum:
+        - male
+        - female
+        - other
+        example: male
+        type: string
+      lang:
+        description: "\U0001F918"
+        enum:
+        - en
+        - tr
+        example: tr
+        type: string
+      last_name:
+        example: Çelik
+        type: string
+      password:
+        example: "12345678910"
+        minLength: 10
+        type: string
+    required:
+    - email
+    - first_name
+    - gender
+    - lang
+    - last_name
+    - password
+    type: object
+  error_handler.BaseResponse:
+    properties:
+      data: {}
+      data_count:
+        type: integer
+      errors: {}
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
+  user_domain.User:
+    properties:
+      appeal:
+        example: "I am a Attack Helicopter \U0001F681"
+        type: string
+      created_at:
+        type: string
+      email:
+        example: resul@mon.time
+        type: string
+      email_verified:
+        type: boolean
+      firstname:
+        example: Resul
+        type: string
+      gender:
+        enum:
+        - male
+        example: male
+        type: string
+      id:
+        type: string
+      lang:
+        description: "\U0001F918"
+        enum:
+        - en
+        - tr
+        example: tr
+        type: string
+      last_login:
+        type: string
+      lastname:
+        example: Çelik
+        type: string
+      mfa_enabled:
+        type: boolean
+      password:
+        type: string
+    required:
+    - firstname
+    - gender
+    - lang
+    - lastname
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  description: API Service for ProjectMonWeb
+  title: API Service
+  version: v1
+paths:
+  /private/user/enable/{key}:
+    get:
+      consumes:
+      - application/json
+      description: Enable MFA
+      parameters:
+      - description: Key
+        in: path
+        name: key
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Enable Session
+      tags:
+      - Auth
+  /private/user/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Logout
+      tags:
+      - Auth
+  /private/user/me:
+    get:
+      consumes:
+      - application/json
+      description: Get user info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/error_handler.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/user_domain.User'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get user info
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update user info
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_domain.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/error_handler.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/user_domain.User'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update user info
+      tags:
+      - User
+  /private/user/me/email:
+    put:
+      consumes:
+      - application/json
+      description: Change user email
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/domains.EmailCahangeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Change user email
+      tags:
+      - User Email
+  /private/user/me/mfa/qr:
+    get:
+      consumes:
+      - application/json
+      description: Get MFA QR
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      security:
+      - ApiKeyAuth: []
+      summary: Get MFA QR
+      tags:
+      - User MFA
+  /private/user/me/mfa/toggle:
+    put:
+      consumes:
+      - application/json
+      description: Toggle MFA
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Toggle MFA
+      tags:
+      - User MFA
+  /private/user/me/password:
+    put:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/domains.PasswordChangeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Change user password
+      tags:
+      - User Password
+  /public/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/domains.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Login
+      tags:
+      - Auth
+  /public/recover/{key}:
+    post:
+      consumes:
+      - application/json
+      description: Kullanıcı şifresini unuttuğunda çalışır.
+      parameters:
+      - description: Key
+        in: path
+        name: key
+        required: true
+        type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/domains.PasswordRecoveryDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Recover Password
+      tags:
+      - Auth Recover
+  /public/recover/send:
+    post:
+      consumes:
+      - application/json
+      description: Kullanıcı şifresini unuttuğunda çalışır.
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/domains.PasswordRecoverySendDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Recover Send
+      tags:
+      - Auth Recover
+  /public/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: Register
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/domains.RegisterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Register
+      tags:
+      - Auth
+  /public/verify/email/{key}:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı mailini değiştirdiğinde gelen maildeki linki tıkladığında
+        çalışır.
+      parameters:
+      - description: Key
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Verify Email
+      tags:
+      - Auth Verify
+  /public/verify/first/{key}:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı ilk kayıt olduğunda gelen maildeki linki tıkladığında
+        çalışır.
+      parameters:
+      - description: Key
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      summary: Verify First
+      tags:
+      - Auth Verify
+securityDefinitions:
+  ApiKeyAuth:
+    in: cookie
+    name: session_id
+    type: apiKey
+swagger: "2.0"

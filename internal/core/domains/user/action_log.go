@@ -9,13 +9,9 @@ import (
 
 type ActionLog struct {
 	base_domain.Base
-	UserID     *uuid.UUID `gorm:"column:user_id;type:uuid"`
-	ActionAt   *time.Time `gorm:"column:action_at"`
-	ActionSlug string     `gorm:"column:action_slug"`
-	IPAddress  string     `gorm:"column:ip_address"`
-	UserAgent  string     `gorm:"column:user_agent"`
-}
-
-func (ActionLog) TableName() string {
-	return "t_action_logs"
+	UserID     *uuid.UUID `db:"user_id"`
+	ActionAt   *time.Time `db:"action_at"`
+	ActionSlug string     `db:"action_slug"`
+	IPAddress  string     `db:"ip_address"`
+	UserAgent  string     `db:"user_agent"`
 }

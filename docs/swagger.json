@@ -1,0 +1,736 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API Service for ProjectMonWeb",
+        "title": "API Service",
+        "contact": {},
+        "version": "v1"
+    },
+    "host": "127.0.0.1:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/private/user/enable/{key}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Enable MFA",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Enable Session",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/logout": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/me": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user info",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/error_handler.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user_domain.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user info",
+                "parameters": [
+                    {
+                        "description": "User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_domain.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/error_handler.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user_domain.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/me/email": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Change user email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Email"
+                ],
+                "summary": "Change user email",
+                "parameters": [
+                    {
+                        "description": "Email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.EmailCahangeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/me/mfa/qr": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get MFA QR",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "User MFA"
+                ],
+                "summary": "Get MFA QR",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/me/mfa/toggle": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Toggle MFA",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User MFA"
+                ],
+                "summary": "Toggle MFA",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/user/me/password": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Change user password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Password"
+                ],
+                "summary": "Change user password",
+                "parameters": [
+                    {
+                        "description": "Password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.PasswordChangeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/login": {
+            "post": {
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Login",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/recover/send": {
+            "post": {
+                "description": "Kullanıcı şifresini unuttuğunda çalışır.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Recover"
+                ],
+                "summary": "Recover Send",
+                "parameters": [
+                    {
+                        "description": "Email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.PasswordRecoverySendDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/recover/{key}": {
+            "post": {
+                "description": "Kullanıcı şifresini unuttuğunda çalışır.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Recover"
+                ],
+                "summary": "Recover Password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.PasswordRecoveryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/register": {
+            "post": {
+                "description": "Register",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "description": "Register",
+                        "name": "register",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domains.RegisterDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/verify/email/{key}": {
+            "get": {
+                "description": "Kullanıcı mailini değiştirdiğinde gelen maildeki linki tıkladığında çalışır.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Verify"
+                ],
+                "summary": "Verify Email",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/verify/first/{key}": {
+            "get": {
+                "description": "Kullanıcı ilk kayıt olduğunda gelen maildeki linki tıkladığında çalışır.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Verify"
+                ],
+                "summary": "Verify First",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/error_handler.BaseResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domains.EmailCahangeDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345678"
+                }
+            }
+        },
+        "domains.LoginDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@example.local"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345678910"
+                }
+            }
+        },
+        "domains.PasswordChangeDTO": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "new_password_confirm",
+                "old_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678"
+                },
+                "new_password_confirm": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678"
+                },
+                "old_password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678"
+                }
+            }
+        },
+        "domains.PasswordRecoveryDTO": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "new_password_confirm"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678"
+                },
+                "new_password_confirm": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678"
+                }
+            }
+        },
+        "domains.PasswordRecoverySendDTO": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "rsuresulcelik@gmail.com"
+                }
+            }
+        },
+        "domains.RegisterDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "gender",
+                "lang",
+                "last_name",
+                "password"
+            ],
+            "properties": {
+                "appeal": {
+                    "type": "string",
+                    "example": "I am a Attack Helicopter 🚁"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@example.local"
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "Resul"
+                },
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "male",
+                        "female",
+                        "other"
+                    ],
+                    "example": "male"
+                },
+                "lang": {
+                    "description": "🤘",
+                    "type": "string",
+                    "enum": [
+                        "en",
+                        "tr"
+                    ],
+                    "example": "tr"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Çelik"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 10,
+                    "example": "12345678910"
+                }
+            }
+        },
+        "error_handler.BaseResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "data_count": {
+                    "type": "integer"
+                },
+                "errors": {},
+                "message": {
+                    "type": "string"
+                },
+                "status_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "user_domain.User": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "gender",
+                "lang",
+                "lastname"
+            ],
+            "properties": {
+                "appeal": {
+                    "type": "string",
+                    "example": "I am a Attack Helicopter 🚁"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "resul@mon.time"
+                },
+                "email_verified": {
+                    "type": "boolean"
+                },
+                "firstname": {
+                    "type": "string",
+                    "example": "Resul"
+                },
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "male"
+                    ],
+                    "example": "male"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lang": {
+                    "description": "🤘",
+                    "type": "string",
+                    "enum": [
+                        "en",
+                        "tr"
+                    ],
+                    "example": "tr"
+                },
+                "last_login": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string",
+                    "example": "Çelik"
+                },
+                "mfa_enabled": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "session_id",
+            "in": "cookie"
+        }
+    }
+}

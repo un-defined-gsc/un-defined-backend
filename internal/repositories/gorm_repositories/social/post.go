@@ -1,1 +1,0 @@
-package social_gorm_repositories

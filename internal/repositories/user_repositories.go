@@ -1,11 +1,12 @@
 package repositories
 
 import (
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 	user_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/user"
-	user_gorm_repositories "github.com/un-defined-gsc/un-defined-backend/internal/repositories/gorm_repositories/user"
+
+	user_ps_repositories "github.com/un-defined-gsc/un-defined-backend/internal/repositories/postgresql_repositories/user"
 	user_redis_repositories "github.com/un-defined-gsc/un-defined-backend/internal/repositories/redis_repositories/user"
-	"gorm.io/gorm"
 )
 
 type userRepositories struct {
@@ -16,11 +17,11 @@ type userRepositories struct {
 	tempUserRepository user_ports.ITempUsersRepository
 }
 
-func NewUserRepositories(db *gorm.DB, redis *redis.Client) user_ports.IUsersRepositories {
+func NewUserRepositories(dbpool *pgxpool.Pool, redis *redis.Client) user_ports.IUsersRepositories {
 	return &userRepositories{
-		usersRepository:    user_gorm_repositories.NewUsersRepository(db),
-		bannedsRepository:  user_gorm_repositories.NewBannedsRepository(db),
-		mfasRepository:     user_gorm_repositories.NewMFAsRepository(db),
+		usersRepository:    user_ps_repositories.NewUsersRepository(dbpool),
+		bannedsRepository:  user_ps_repositories.NewBannedsRepository(dbpool),
+		mfasRepository:     user_ps_repositories.NewMFAsRepository(dbpool),
 		tokenRepository:    user_redis_repositories.NewTokensRepository(redis),
 		tempUserRepository: user_redis_repositories.NewTempUsersRepository(redis),
 	}

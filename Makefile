@@ -10,7 +10,7 @@ dev.migrate.reset:
 
 dev.swagger.init:
 	@echo "Generating swagger..."
-	@swag init  --parseVendor  -d . -g /cmd/api-service/main.go 
+	@swag init  --parseVendor  -d . -g /cmd/un-defined/main.go 
 
 
 help:
