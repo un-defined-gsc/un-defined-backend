@@ -15,7 +15,7 @@ type LoginDTO struct {
 type RegisterDTO struct {
 	FirstName string  `json:"first_name" validate:"required" example:"Resul"`
 	LastName  string  `json:"last_name" validate:"required" example:"Çelik"`
-	Lang      string  `json:"lang" validate:"required,oneof=en tr" example:"tr"` //🤘
+	Lang      string  `json:"lang" example:"tr"` //🤘
 	Email     string  `json:"email" validate:"required,email,lowercase" example:"example@example.local"`
 	Password  string  `json:"password" validate:"required,min=10" example:"12345678910"`
 	Gender    string  `json:"gender" validate:"required,oneof=male female not other" example:"male"`

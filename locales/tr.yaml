@@ -2,9 +2,9 @@
 # Version: 1.0.0
 
 # Routes
-routes.private.hello: "Monitoring Time Private Routes - Pong"
-routes.public.hello: "Monitoring Time Public Routes - Pong"
-routes.v1.hello: " Monitoring Time Management API v1 - Pong"
+routes.private.hello: "UN-DEFINED Private Routes - Pong"
+routes.public.hello: "UN-DEFINED Public Routes - Pong"
+routes.v1.hello: " UN-DEFINED Management API v1 - Pong"
 # SQL
 sql.no_rows: "Kayıt bulunamadı"
 
