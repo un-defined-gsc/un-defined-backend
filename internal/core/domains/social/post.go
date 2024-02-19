@@ -12,4 +12,5 @@ type Post struct {
 	UserID     uuid.UUID `json:"user_id"`
 	Title      string    `json:"title"`
 	Content    string    `json:"body"`
+	Tags       []string  `json:"tags"`
 }
