@@ -47,7 +47,7 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Pos
 	if err = s.deps.ValidatorService().ValidateStruct(newPost); err != nil {
 		return
 	}
-	user, err := 
+
 	if err != nil {
 		return
 	}
