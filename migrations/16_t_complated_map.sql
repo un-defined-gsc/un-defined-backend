@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS t_completed_map (
+CREATE TABLE IF NOT EXISTS t_completed_maps (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   user_id uuid NOT NULL,
   path_id uuid NOT NULL,
@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS t_completed_map (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE t_completed_map;
+DROP TABLE t_completed_maps;
 -- +goose StatementEnd

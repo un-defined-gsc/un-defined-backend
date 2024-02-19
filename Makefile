@@ -2,11 +2,11 @@
 
 dev.migrate.up:
 	@echo "Migrating up..."
-	@goose -dir migrations postgres "host=localhost password=api user=api dbname=api  sslmode=disable" up
+	@goose -dir migrations postgres "host=localhost password=change-me user=change-me dbname=change-me  sslmode=disable" up
 
 dev.migrate.reset:
 	@echo "Migrating down..."
-	@goose -dir migrations postgres "host=localhost password=api user=api dbname=api  sslmode=disable" reset
+	@goose -dir migrations postgres "host=localhost password=change-me user=change-me dbname=change-me  sslmode=disable" reset
 
 dev.swagger.init:
 	@echo "Generating swagger..."
