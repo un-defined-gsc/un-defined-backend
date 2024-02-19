@@ -21,6 +21,7 @@ import (
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/server"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/store"
 	"github.com/un-defined-gsc/un-defined-backend/internal/repositories"
+	censor_service "github.com/un-defined-gsc/un-defined-backend/pkg/censor"
 	"github.com/un-defined-gsc/un-defined-backend/pkg/db_adapters"
 	hasher_service "github.com/un-defined-gsc/un-defined-backend/pkg/hasher"
 	email "github.com/un-defined-gsc/un-defined-backend/pkg/mailler"
@@ -52,7 +53,12 @@ func Run(cfg *config.Config) {
 	go emailService.WriteStdoutError() //doğru bir yöntem değil
 
 	// service initialize
-	deps := deps_services.NewDepsServices(hasher_service.NewHasherService(), emailService, otp_serivce.NewOTPService(config.GetConfig().App.Site, 30), validator_service.NewValidatorService())
+	deps := deps_services.NewDepsServices(
+		hasher_service.NewHasherService(),
+		emailService, otp_serivce.NewOTPService(config.GetConfig().App.Site, 30),
+		validator_service.NewValidatorService(),
+		censor_service.NewCensorService("./locales/badwords.txt"),
+	)
 	userser := user_services.NewUsersServices(userRepo, deps)
 
 	// adapter initialize

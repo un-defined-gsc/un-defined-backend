@@ -10,6 +10,7 @@ type IDepsServices interface {
 	ValidatorService() IValidatorService
 	MailService() IEmailService
 	OTPService() IOTPService
+	CensorService() CensorService
 	// CaptchaService() ICaptchaService
 }
 
@@ -40,4 +41,8 @@ type IEmailService interface {
 	SendPasswordRecoveryMail(ctx context.Context, name, surname, expdate, to, link string) (err error)
 	SendFeedbackSuccessMail(ctx context.Context, name, surname, feedback, created_at, to string) (err error) // Eklenecekler var
 	SendMails(ctx context.Context, to []string, subject, body string) (err error)
+}
+
+type CensorService interface {
+	CensorText(textAddrs ...*string) (err error)
 }

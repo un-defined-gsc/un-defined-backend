@@ -12,7 +12,7 @@ import (
 // @BasePath /api/v1
 // @securityDefinitions.apikey ApiKeyAuth
 // @in cookie
-// @name session_id
+// @name session_id11
 func main() {
 	err := config.InitializeConfig("config/config.yaml")
 	if err != nil {

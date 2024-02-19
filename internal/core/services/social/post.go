@@ -29,15 +29,55 @@ func (s *postService) CreatePost(ctx context.Context, post *social_domain.Post) 
 	if err = s.deps.ValidatorService().ValidateStruct(post); err != nil {
 		return
 	}
+	for idx := range post.Tags {
+		err := s.deps.CensorService().CensorText(&post.Tags[idx])
+		if err != nil {
+			return err
+		}
+	}
+
+	err = s.deps.CensorService().CensorText(&post.Title, &post.Content)
+	if err != nil {
+		return
+	}
 	return s.socialRepositories.PostsRepository().Create(ctx, post)
 }
 
 func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Post) (err error) {
+	if err = s.deps.ValidatorService().ValidateStruct(newPost); err != nil {
+		return
+	}
+
+	if err != nil {
+		return
+	}
+	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, *newPost.ID)
+	if err != nil {
+		return
+	}
+
+	for idx := range newPost.Tags {
+		err := s.deps.CensorService().CensorText(&newPost.Tags[idx])
+		if err != nil {
+			return err
+		}
+	}
+
+	err = s.deps.CensorService().CensorText(&newPost.Title, &newPost.Content)
+	if err != nil {
+		return
+	}
 
 	return s.socialRepositories.PostsRepository().Update(ctx, newPost)
 }
 
 func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID) (err error) {
+
+	var userID uuid.UUID // c.Local("user").(*jwt.Token).Claims.(jwt.MapClaims)["id"].(string)
+	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
+	if err != nil {
+		return
+	}
 
 	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID)
 }
