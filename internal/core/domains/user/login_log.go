@@ -9,13 +9,9 @@ import (
 
 type LoginLog struct {
 	base_domain.Base
-	UserID    *uuid.UUID `gorm:"column:user_id;type:UUID;NOT NULL"`
-	LoginAt   *time.Time `gorm:"column:login_at;type:TIMESTAMP;NOT NULL;default:CURRENT_TIMESTAMP"`
-	IPAddress string     `gorm:"column:ip_address;type:TEXT;NOT NULL"`
-	UserAgent string     `gorm:"column:user_agent;type:TEXT;NOT NULL"`
-	IsSuccess bool       `gorm:"column:is_success;type:BOOLEAN;NOT NULL"`
-}
-
-func (LoginLog) TableName() string {
-	return "t_login_logs"
+	UserID    *uuid.UUID `db:"user_id"`
+	LoginAt   *time.Time `db:"login_at"`
+	IPAddress string     `db:"ip_address"`
+	UserAgent string     `db:"user_agent"`
+	IsSuccess bool       `db:"is_success"`
 }

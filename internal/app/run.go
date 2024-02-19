@@ -8,6 +8,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
+	"github.com/pressly/goose/v3"
 	"github.com/un-defined-gsc/un-defined-backend/internal/config"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core"
 	deps_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/deps"
@@ -18,7 +21,6 @@ import (
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/server"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/store"
 	"github.com/un-defined-gsc/un-defined-backend/internal/repositories"
-	gorm_migration "github.com/un-defined-gsc/un-defined-backend/internal/repositories/gorm_repositories"
 	censor_service "github.com/un-defined-gsc/un-defined-backend/pkg/censor"
 	"github.com/un-defined-gsc/un-defined-backend/pkg/db_adapters"
 	hasher_service "github.com/un-defined-gsc/un-defined-backend/pkg/hasher"
@@ -28,8 +30,8 @@ import (
 )
 
 func Run(cfg *config.Config) {
-	//gormclient
-	db, err := db_adapters.NewGormClient(cfg.Database.Host, cfg.Database.Port, cfg.Database.User, cfg.Database.Password, cfg.Database.Database)
+	//postgreClient
+	pool, err := db_adapters.NewPostgressClient(cfg.Database.Host, cfg.Database.Port, cfg.Database.User, cfg.Database.Password, cfg.Database.Database)
 	if err != nil {
 		panic(err)
 	}
@@ -38,12 +40,13 @@ func Run(cfg *config.Config) {
 		panic(err)
 	}
 
-	// repository initialize
-	userRepo := repositories.NewUserRepositories(db, rdb)
-
-	if err := gorm_migration.StartMigration(); err != nil {
+	// database migrate
+	err = databaseMigrate(cfg.Database.MigrationsPath, pool)
+	if err != nil {
 		panic(err)
 	}
+	// repository initialize
+	userRepo := repositories.NewUserRepositories(pool, rdb)
 
 	// email service initialize
 	emailService := email.EmailInit(cfg.Email.Address, cfg.Email.Name, cfg.Email.Host, cfg.Email.Port, cfg.Email.Username, cfg.Email.Password)
@@ -86,17 +89,17 @@ func Run(cfg *config.Config) {
 	fmt.Println("Fiber was successful shutdown.")
 }
 
-// func databaseMigrate(migrationPath string, pool *pgxpool.Pool) error {
-// 	err := goose.SetDialect("postgres")
-// 	if err != nil {
-// 		return err
-// 	}
-// 	db := stdlib.OpenDBFromPool(pool)
-// 	if err := goose.Up(db, migrationPath); err != nil {
-// 		return err
-// 	}
-// 	if err := db.Close(); err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
+func databaseMigrate(migrationPath string, pool *pgxpool.Pool) error {
+	err := goose.SetDialect("postgres")
+	if err != nil {
+		return err
+	}
+	db := stdlib.OpenDBFromPool(pool)
+	if err := goose.Up(db, migrationPath); err != nil {
+		return err
+	}
+	if err := db.Close(); err != nil {
+		return err
+	}
+	return nil
+}
