@@ -62,7 +62,7 @@ func Run(cfg *config.Config) {
 	userser := user_services.NewUsersServices(userRepo, deps)
 
 	// adapter initialize
-	adapter := core.NewCoreAdapter(userser, deps)
+	adapter := core.NewCoreAdapter(userser, deps, nil)
 
 	//handler initialize
 	handlers := http.NewHandler(adapter)

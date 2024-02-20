@@ -34,16 +34,22 @@ type ICommentsService interface {
 	GetComments(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []*social_domain.Comment, err error)
 }
 
-type ITagsService interface {
-	CreateTag(ctx context.Context, tag *social_domain.Tag) (err error)
-	DeleteTag(ctx context.Context, tagID uuid.UUID) (err error)
-	GetTag(ctx context.Context, tagID uuid.UUID) (tag *social_domain.Tag, err error)
-	GetTags(ctx context.Context, limit, offset uint64) (tags []*social_domain.Tag, err error)
+type IImagesService interface {
+	UploadImage(ctx context.Context, image *social_domain.Image) (err error)
+	DeleteImage(ctx context.Context, imageID uuid.UUID) (err error)
+	GetImage(ctx context.Context, imageID uuid.UUID) (image *social_domain.Image, err error)
+	GetImages(ctx context.Context, limit, offset uint64) (images []*social_domain.Image, err error)
+}
+
+type ILikesService interface {
+	Like(ctx context.Context, like *social_domain.Like) (err error)
+	UnLike(ctx context.Context, likeID uuid.UUID) (err error)
 }
 
 type ISocialServices interface {
 	PostsService() IPostsService
 	CategoriesService() ICategoriesService
 	CommentsService() ICommentsService
-	TagsService() ITagsService
+
+	ImagesService() IImagesService
 }
