@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	social_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/social"
 	deps_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/deps"
@@ -25,7 +26,7 @@ func newPostService(
 	}
 }
 
-func (s *postService) CreatePost(ctx context.Context, post *social_domain.Post) (err error) {
+func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO) (err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(post); err != nil {
 		return
 	}
@@ -43,7 +44,7 @@ func (s *postService) CreatePost(ctx context.Context, post *social_domain.Post) 
 	return s.socialRepositories.PostsRepository().Create(ctx, post)
 }
 
-func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Post) (err error) {
+func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePostDTO) (err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(newPost); err != nil {
 		return
 	}
@@ -51,7 +52,7 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Pos
 	if err != nil {
 		return
 	}
-	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, *newPost.ID)
+	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID)
 	if err != nil {
 		return
 	}
@@ -71,15 +72,14 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *social_domain.Pos
 	return s.socialRepositories.PostsRepository().Update(ctx, newPost)
 }
 
-func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID) (err error) {
+func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error) {
 
-	var userID uuid.UUID // c.Local("user").(*jwt.Token).Claims.(jwt.MapClaims)["id"].(string)
 	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
 	if err != nil {
 		return
 	}
 
-	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID)
+	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID, userID)
 }
 
 func (s *postService) GetPost(ctx context.Context, postID uuid.UUID) (post *domain.InPostDTO, err error) {

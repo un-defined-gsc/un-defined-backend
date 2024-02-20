@@ -7,7 +7,8 @@ import (
 
 type Image struct {
 	base_domain.Base
-	PostID uuid.UUID `gorm:"column:post_id" json:"post_id"`
-	UserID uuid.UUID `gorm:"column:user_id" json:"user_id"`
-	Path   string    `gorm:"column:path" json:"path"`
+	PostID   uuid.UUID `gorm:"column:post_id" json:"post_id"`
+	UserID   uuid.UUID `gorm:"column:user_id" json:"user_id"`
+	Category string    `gorm:"column:category" json:"category"`
+	Path     string    `gorm:"column:path" json:"path"`
 }

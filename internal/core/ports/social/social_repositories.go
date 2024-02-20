@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	social_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/social"
 )
@@ -11,9 +12,9 @@ import (
 type IPostsRepository interface {
 
 	// Post Table Commands //
-	Create(ctx context.Context, post *social_domain.Post) (err error)
-	Update(ctx context.Context, newPost *social_domain.Post) (err error)
-	DeleteByID(ctx context.Context, postID uuid.UUID) (err error)
+	Create(ctx context.Context, post *domains.CratePostDTO) (err error)
+	Update(ctx context.Context, newPost *domains.UpdatePostDTO) (err error)
+	DeleteByID(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error)
 
 	// End Post Table Commands //
 
@@ -33,12 +34,10 @@ type ICategoriesRepository interface {
 
 	// Category Table Commands //
 	Create(ctx context.Context, category *social_domain.Category) (err error)
-	Update(ctx context.Context, newCategory *social_domain.Category) (err error)
 	DeleteByID(ctx context.Context, categoryID uuid.UUID) (err error)
 	// End Category Table Commands //
 
 	// Category Table Queries //
-
 	GetByID(ctx context.Context, categoryID uuid.UUID) (category *social_domain.Category, err error)
 	GetAll(ctx context.Context, limit, offset uint64) (categories []*social_domain.Category, err error)
 	// End Category Table Queries //
@@ -74,9 +73,34 @@ type ITagsRepository interface {
 
 }
 
+type IImagesRepository interface {
+
+	// Image Table Commands //
+	Upload(ctx context.Context, image *social_domain.Image) (err error)
+	DeleteByID(ctx context.Context, imageID uuid.UUID) (err error)
+	// End Image Table Commands //
+
+	// Image Table Queries //
+	GetByID(ctx context.Context, imageID uuid.UUID) (image *social_domain.Image, err error)
+	GetAll(ctx context.Context, limit, offset uint64) (images []*social_domain.Image, err error)
+	// End Image Table Queries //
+
+}
+
+type ILikesRepository interface {
+
+	// Like Table Commands //
+	Like(ctx context.Context, like *social_domain.Like) (err error)
+	UnLikeByID(ctx context.Context, likeID uuid.UUID) (err error)
+	// End Like Table Commands //
+
+}
+
 type ISocialRepositories interface {
 	PostsRepository() IPostsRepository
 	CategoriesRepository() ICategoriesRepository
 	CommentsRepository() ICommentsRepository
 	TagsRepository() ITagsRepository
+	ImagesRepository() IImagesRepository
+	LikesRepository() ILikesRepository
 }
