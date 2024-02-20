@@ -4,14 +4,15 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	social_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/social"
 )
 
 type IPostsService interface {
-	CreatePost(ctx context.Context, post *social_domain.Post) (err error)
-	UpdatePost(ctx context.Context, newPost *social_domain.Post) (err error)
-	DeletePost(ctx context.Context, postID uuid.UUID) (err error)
+	CreatePost(ctx context.Context, post *domains.CratePostDTO) (err error)
+	UpdatePost(ctx context.Context, newPost *domains.UpdatePostDTO) (err error)
+	DeletePost(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error)
 	GetPost(ctx context.Context, postID uuid.UUID) (post *domain.InPostDTO, err error)
 	GetPosts(ctx context.Context, limit, offset uint64) (posts []*social_domain.Post, err error)
 	GetPostByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error)
