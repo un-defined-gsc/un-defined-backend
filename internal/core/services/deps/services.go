@@ -9,6 +9,7 @@ type depsServices struct {
 	otpService       deps_ports.IOTPService
 	validatorService deps_ports.IValidatorService
 	cencorService    deps_ports.CensorService
+	storageservice   deps_ports.IStorageService
 }
 
 func NewDepsServices(
@@ -18,6 +19,7 @@ func NewDepsServices(
 	otpService deps_ports.IOTPService,
 	validatorService deps_ports.IValidatorService,
 	cencorService deps_ports.CensorService,
+	storageservice deps_ports.IStorageService,
 ) deps_ports.IDepsServices {
 	return &depsServices{
 		// captchaService:   captchaService,
@@ -26,6 +28,7 @@ func NewDepsServices(
 		otpService:       otpService,
 		validatorService: validatorService,
 		cencorService:    cencorService,
+		storageservice:   storageservice,
 	}
 }
 
@@ -50,4 +53,8 @@ func (s *depsServices) ValidatorService() deps_ports.IValidatorService {
 }
 func (s *depsServices) CensorService() deps_ports.CensorService {
 	return s.cencorService
+}
+
+func (s *depsServices) StorageService() deps_ports.IStorageService {
+	return s.storageservice
 }

@@ -26,6 +26,7 @@ import (
 	hasher_service "github.com/un-defined-gsc/un-defined-backend/pkg/hasher"
 	email "github.com/un-defined-gsc/un-defined-backend/pkg/mailler"
 	otp_serivce "github.com/un-defined-gsc/un-defined-backend/pkg/otp"
+	"github.com/un-defined-gsc/un-defined-backend/pkg/storage"
 	"github.com/un-defined-gsc/un-defined-backend/pkg/validator_service"
 )
 
@@ -58,6 +59,7 @@ func Run(cfg *config.Config) {
 		emailService, otp_serivce.NewOTPService(config.GetConfig().App.Site, 30),
 		validator_service.NewValidatorService(),
 		censor_service.NewCensorService("./locales/badwords.txt"),
+		storage.NewFileManager(cfg.App.StoragePath),
 	)
 	userser := user_services.NewUsersServices(userRepo, deps)
 	// adapter initialize

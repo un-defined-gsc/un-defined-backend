@@ -6,10 +6,9 @@ import (
 )
 
 // CompletedMap ...
-type CompletedMap struct {
+type Submission struct {
 	base_domain.Base
-	UserID    uuid.UUID `json:"user_id"`
-	PathWayID uuid.UUID `json:"pathway_id"`
-	RoadmapID uuid.UUID `json:"roadmap_id"`
-	SubPathID uuid.UUID `json:"subpath_id"`
+	RoadmapID *uuid.UUID `db:"roadmap_id" json:"roadmap_id"`
+	UserID    *uuid.UUID `db:"user_id" json:"-"`
+	PathWayID *uuid.UUID `db:"path_way_id" json:"path_way_id"`
 }

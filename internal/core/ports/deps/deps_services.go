@@ -3,6 +3,7 @@ package deps_ports
 import (
 	"bytes"
 	"context"
+	"mime/multipart"
 )
 
 type IDepsServices interface {
@@ -11,14 +12,21 @@ type IDepsServices interface {
 	MailService() IEmailService
 	OTPService() IOTPService
 	CensorService() CensorService
-	// CaptchaService() ICaptchaService
+	StorageService() IStorageService
 }
 
-// type ICaptchaService interface {
-// 	New() string
-// 	GetImageBytes(id string) (buf bytes.Buffer, err error)
-// 	Verify(id, value string) bool
-// }
+type IStorageService interface {
+	Upload(
+		fiilePart multipart.File,
+		fileHeader *multipart.FileHeader,
+		mainDir string,
+		subDir string,
+		generateUniqueName bool,
+		allowedExtensions []string,
+	) (string, error)
+	Get(mainDir, subDir, fileName string) (str string)
+	Delete(fileUUID string) (err error)
+}
 
 type IHasherService interface {
 	HashPassword(password string) (hashedPassword string, err error)

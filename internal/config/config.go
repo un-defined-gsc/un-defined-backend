@@ -52,10 +52,11 @@ type Log struct {
 }
 
 type App struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Site    string `yaml:"site"`
-	Prod    *bool  `yaml:"prod"`
+	Name        string `yaml:"name"`
+	Version     string `yaml:"version"`
+	Site        string `yaml:"site"`
+	Prod        *bool  `yaml:"prod"`
+	StoragePath string `yaml:"storagePath"`
 }
 
 type Redis struct {
