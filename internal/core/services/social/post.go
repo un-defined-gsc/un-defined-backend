@@ -48,11 +48,11 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePos
 	if err = s.deps.ValidatorService().ValidateStruct(newPost); err != nil {
 		return
 	}
-
 	if err != nil {
 		return
 	}
-	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID)
+	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID, newPost.UserID)
+
 	if err != nil {
 		return
 	}
@@ -82,9 +82,21 @@ func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID, userID u
 	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID, userID)
 }
 
-func (s *postService) GetPost(ctx context.Context, postID uuid.UUID) (post *domain.InPostDTO, err error) {
+func (s *postService) GetPost(ctx context.Context, postID, userID uuid.UUID) (post *domain.InPostDTO, err error) {
 
-	return s.socialRepositories.PostsRepository().GetByID(ctx, postID)
+	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
+	if err != nil {
+		return
+	}
+	post.Deleteable = true
+
+	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostIDAndLastDays(ctx, userID, postID)
+	if err != nil {
+		return
+	}
+	post.Editable = true
+
+	return s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
 }
 
 func (s *postService) GetPosts(ctx context.Context, limit, offset uint64) (posts []*social_domain.Post, err error) {

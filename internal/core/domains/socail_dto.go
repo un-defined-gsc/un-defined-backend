@@ -61,16 +61,16 @@ type PostsDTO struct {
 
 type CratePostDTO struct {
 	ID       uuid.UUID `json:"-"`
-	Title    string    `json:"title"`
-	Content  string    `json:"content"`
-	Category string    `json:"category"`
-	UserID   uuid.UUID `json:"-"`
+	Title    string    `json:"title" validate:"required"`
+	Content  string    `json:"content" validate:"required"`
+	Category string    `json:"category" validate:"required"`
+	UserID   uuid.UUID `json:"-" `
 	Tags     []string  `json:"tags"`
 	Image    []string  `json:"image"`
 }
 
 type UpdatePostDTO struct {
-	ID       uuid.UUID `json:"id"`
+	ID       uuid.UUID `json:"id" validate:"required"`
 	Title    string    `json:"title"`
 	UserID   uuid.UUID `json:"-"`
 	Content  string    `json:"content"`

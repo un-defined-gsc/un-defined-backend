@@ -49,3 +49,10 @@ http:
 logger:
   log_level: 'debug'
 
+email: 
+  host: smtp.gmail.com
+  port: 587
+  username: "kendisi@resulcelik.net"
+  password: "jqjpcsdpldlextug"
+  address: "kendisi@resulcelik.net"
+  name: "Resul Çelik"

@@ -54,6 +54,8 @@ func (h *PrivateHandler) UpdatePost(c *fiber.Ctx) error {
 	if err := c.BodyParser(&post); err != nil {
 		return err
 	}
+	userID := c.Locals("user").(domains.SessionDTO).ID
+	post.UserID = *userID
 	err := h.coreAdapter.SocialServices().PostsService().UpdatePost(c.Context(), &post)
 	if err != nil {
 		return err

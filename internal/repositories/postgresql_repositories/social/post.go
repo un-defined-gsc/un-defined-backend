@@ -1,9 +1,10 @@
-package social_gorm_repositories
+package social_repositories
 
 import (
 	"context"
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
@@ -49,12 +50,13 @@ func (r *PostRepository) Update(ctx context.Context, newPost *domains.UpdatePost
 	_, err = r.dbpool.Exec(ctx, query, newPost.Title, newPost.Content, newPost.ID)
 	return
 }
-func (r *PostRepository) DeleteByID(ctx context.Context, postID, userID string) (err error) {
+func (r *PostRepository) DeleteByID(ctx context.Context, postID, userID uuid.UUID) (err error) {
 	query := `DELETE FROM t_posts WHERE id = $1 AND user_id = $2`
 	_, err = r.dbpool.Exec(ctx, query, postID, userID)
 	return
 }
-func (r *PostRepository) GetByID(ctx context.Context, postID string) (post *domains.InPostDTO, err error) {
+
+func (r *PostRepository) GetByID(ctx context.Context, postID, userID uuid.UUID) (post *domains.InPostDTO, err error) {
 	query := `SELECT u.name,u.surname,c.name, p.title, p.content, p.created_at,t.name,COUNT(l.* ) AS like_count,c.comment,i.path FROM t_posts p
 	INNER JOIN t_users u ON p.user_id = u.id
 	INNER JOIN t_categories c ON p.category_id = c.id
@@ -62,10 +64,11 @@ func (r *PostRepository) GetByID(ctx context.Context, postID string) (post *doma
 	INNER JOIN t_likes l ON p.id = l.post_id
 	INNER JOIN t_comments c ON p.id = c.post_id
 	INNER JOIN t_tags t ON p.id = t.post_id 
-	WHERE id = $1`
+	WHERE ($1::uuid = uuid_nil() OR p.id = $1) AND ($2::uuid = uuid_nil() OR p.user_id = $2)`
 	err = r.dbpool.QueryRow(ctx, query, postID).Scan(&post.Name, &post.Surname, &post.Category, &post.Title, &post.Content, &post.CreatedAt, &post.Tags, &post.Likes, &post.Comments, &post.Images)
 	return
 }
+
 func (r *PostRepository) GetAll(ctx context.Context, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 	query := `SELECT p.id,u.name,u.surname,c.name, p.title, p.content, p.created_at,t.name,COUNT(l.* ) AS like_count,COUNT(cm.*) AS cm_count ,i.path FROM t_posts p
 	INNER JOIN t_users u ON p.user_id = u.id
@@ -81,6 +84,7 @@ func (r *PostRepository) GetAll(ctx context.Context, limit, offset uint64) (post
 	}
 	defer rows.Close()
 	for rows.Next() {
+
 		post := &domains.PostDTO{}
 		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Category, &post.UserID, &post.CreatedAt, &post.Tags, &post.Likes, &post.Comments, &post.Images)
 		if err != nil {
