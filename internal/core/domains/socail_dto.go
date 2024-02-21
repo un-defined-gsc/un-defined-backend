@@ -29,16 +29,18 @@ type PostDTO struct {
 }
 
 type InPostDTO struct {
-	Category  string       `json:"category"`
-	Name      string       `json:"name"`
-	Surname   string       `json:"surname"`
-	Title     string       `json:"title"`
-	Content   string       `json:"content"`
-	Likes     uint64       `json:"likes"`
-	Comments  []CommentDTO `json:"comments"`
-	Images    []string     `json:"images"`
-	Tags      []TagDTO     `json:"tags"`
-	CreatedAt time.Time    `json:"created_at"`
+	Category   string       `json:"category"`
+	Name       string       `json:"name"`
+	Surname    string       `json:"surname"`
+	Title      string       `json:"title"`
+	Content    string       `json:"content"`
+	Likes      uint64       `json:"likes"`
+	Editable   bool         `json:"editable"`
+	Deleteable bool         `json:"deleteable"`
+	Comments   []CommentDTO `json:"comments"`
+	Images     []string     `json:"images"`
+	Tags       []TagDTO     `json:"tags"`
+	CreatedAt  time.Time    `json:"created_at"`
 }
 
 type CommentDTO struct {
@@ -70,6 +72,7 @@ type CratePostDTO struct {
 type UpdatePostDTO struct {
 	ID       uuid.UUID `json:"id"`
 	Title    string    `json:"title"`
+	UserID   uuid.UUID `json:"-"`
 	Content  string    `json:"content"`
 	Category string    `json:"category"`
 	Tags     []string  `json:"tags"`
