@@ -5,5 +5,5 @@ import base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/d
 // Category ...
 type Category struct {
 	base_domain.Base
-	Name string `gorm:"column:name" json:"category"`
+	Name string `db:"name" json:"category"`
 }

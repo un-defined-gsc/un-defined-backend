@@ -28,17 +28,16 @@ func (s *imagesService) UploadImage(ctx context.Context, image *social_domain.Im
 	if err = s.deps.ValidatorService().ValidateStruct(image); err != nil {
 		return
 	}
-	return s.socialRepositories.ImagesRepository().Upload(ctx, image)
+	return s.socialRepositories.ImagesRepository().Create(ctx, image)
 }
 
 func (s *imagesService) DeleteImage(ctx context.Context, imageID uuid.UUID) (err error) {
 	return s.socialRepositories.ImagesRepository().DeleteByID(ctx, imageID)
 }
 
-func (s *imagesService) GetImage(ctx context.Context, imageID uuid.UUID) (image *social_domain.Image, err error) {
-	return s.socialRepositories.ImagesRepository().GetByID(ctx, imageID)
-}
-
-func (s *imagesService) GetImages(ctx context.Context, limit, offsett uint64) (images []*social_domain.Image, err error) {
-	return s.socialRepositories.ImagesRepository().GetAll(ctx, limit, offsett)
+func (s *imagesService) UpdateImage(ctx context.Context, newImage *social_domain.Image) (err error) {
+	if err = s.deps.ValidatorService().ValidateStruct(newImage); err != nil {
+		return
+	}
+	return s.socialRepositories.ImagesRepository().Update(ctx, newImage)
 }

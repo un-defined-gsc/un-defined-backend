@@ -3,8 +3,7 @@ package social_service
 import (
 	"context"
 
-	"github.com/google/uuid"
-	social_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/social"
+	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	deps_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/deps"
 	social_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/social"
 )
@@ -24,26 +23,7 @@ func newCategoriesService(
 	}
 }
 
-func (s *categoryService) CreateCategory(ctx context.Context, category *social_domain.Category) (err error) {
-	if err = s.deps.ValidatorService().ValidateStruct(category); err != nil {
-		return
-	}
-	err = s.deps.CensorService().CensorText(&category.Name)
-	if err != nil {
-		return
-	}
-	return s.socialRepositories.CategoriesRepository().Create(ctx, category)
-}
+func (s *categoryService) GetCategories(ctx context.Context) (categories []*domains.CategoryDTO, err error) {
 
-func (s *categoryService) DeleteCategory(ctx context.Context, categoryID uuid.UUID) (err error) {
-	return s.socialRepositories.CategoriesRepository().DeleteByID(ctx, categoryID)
-}
-
-func (s *categoryService) GetCategory(ctx context.Context, categoryID uuid.UUID) (category *social_domain.Category, err error) {
-	return s.socialRepositories.CategoriesRepository().GetByID(ctx, categoryID)
-}
-
-func (s *categoryService) GetCategories(ctx context.Context, limit, offsett uint64) (categories []*social_domain.Category, err error) {
-
-	return s.socialRepositories.CategoriesRepository().GetAll(ctx, limit, offsett)
+	return s.socialRepositories.CategoriesRepository().GetAll(ctx)
 }

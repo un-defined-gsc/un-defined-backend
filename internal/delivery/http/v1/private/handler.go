@@ -37,6 +37,7 @@ func (h *PrivateHandler) Init(router fiber.Router) {
 		return h.responseJson(200, "", nil)
 	})
 	h.initUserRoutes(root)
+	h.initPostRoutes(root)
 }
 
 func (h *PrivateHandler) authMiddleware(c *fiber.Ctx) error {

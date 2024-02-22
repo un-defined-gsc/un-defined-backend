@@ -92,7 +92,9 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/social_domain.Post"
+
+                            "$ref": "#/definitions/domains.UpdatePostDTO"
+
                         }
                     }
                 ],
@@ -129,7 +131,11 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
+<<<<<<< HEAD
+                            "$ref": "#/definitions/domains.CratePostDTO"
+=======
                             "$ref": "#/definitions/social_domain.Post"
+>>>>>>> main
                         }
                     }
                 ],
@@ -145,7 +151,11 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
+                                            "$ref": "#/definitions/domains.CratePostDTO"
+=======
                                             "$ref": "#/definitions/social_domain.Post"
+>>>>>>> main
                                         }
                                     }
                                 }
@@ -736,6 +746,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domains.CratePostDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domains.EmailCahangeDTO": {
             "type": "object",
             "required": [
@@ -876,6 +912,35 @@ const docTemplate = `{
                     "type": "string",
                     "minLength": 10,
                     "example": "12345678910"
+                }
+            }
+        },
+        "domains.UpdatePostDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },

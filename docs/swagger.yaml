@@ -1,5 +1,22 @@
 basePath: /api/v1
 definitions:
+  domains.CratePostDTO:
+    properties:
+      category:
+        type: string
+      content:
+        type: string
+      image:
+        items:
+          type: string
+        type: array
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
   domains.EmailCahangeDTO:
     properties:
       email:
@@ -105,6 +122,25 @@ definitions:
     - lang
     - last_name
     - password
+    type: object
+  domains.UpdatePostDTO:
+    properties:
+      category:
+        type: string
+      content:
+        type: string
+      id:
+        type: string
+      image:
+        items:
+          type: string
+        type: array
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
     type: object
   error_handler.BaseResponse:
     properties:
@@ -231,7 +267,7 @@ paths:
         name: post
         required: true
         schema:
-          $ref: '#/definitions/social_domain.Post'
+          $ref: '#/definitions/domains.CratePostDTO'
       produces:
       - application/json
       responses:
@@ -242,7 +278,7 @@ paths:
             - $ref: '#/definitions/error_handler.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/social_domain.Post'
+                  $ref: '#/definitions/domains.CratePostDTO'
               type: object
       security:
       - ApiKeyAuth: []
@@ -259,7 +295,7 @@ paths:
         name: post
         required: true
         schema:
-          $ref: '#/definitions/social_domain.Post'
+          $ref: '#/definitions/domains.UpdatePostDTO'
       produces:
       - application/json
       responses:

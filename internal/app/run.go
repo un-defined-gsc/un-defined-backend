@@ -14,6 +14,7 @@ import (
 	"github.com/un-defined-gsc/un-defined-backend/internal/config"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core"
 	deps_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/deps"
+	social_service "github.com/un-defined-gsc/un-defined-backend/internal/core/services/social"
 	user_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/user"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/error_handler"
@@ -48,7 +49,7 @@ func Run(cfg *config.Config) {
 	}
 	// repository initialize
 	userRepo := repositories.NewUserRepositories(pool, rdb)
-
+	socialRepo := repositories.NewSocialRepositories(pool)
 	// email service initialize
 	emailService := email.EmailInit(cfg.Email.Address, cfg.Email.Name, cfg.Email.Host, cfg.Email.Port, cfg.Email.Username, cfg.Email.Password)
 	go emailService.WriteStdoutError() //doğru bir yöntem değil
@@ -62,8 +63,10 @@ func Run(cfg *config.Config) {
 		storage.NewFileManager(cfg.App.StoragePath),
 	)
 	userser := user_services.NewUsersServices(userRepo, deps)
+
+	socialser := social_service.NewSocialService(socialRepo, deps)
 	// adapter initialize
-	adapter := core.NewCoreAdapter(userser, deps, nil)
+	adapter := core.NewCoreAdapter(userser, deps, socialser)
 
 	//handler initialize
 	handlers := http.NewHandler(adapter)

@@ -41,7 +41,8 @@ var (
 	ErrMFANotEnabled             = NewServiceErrorWithKey(1009, "mfa_not_enabled", http.StatusPreconditionRequired)      // MFA aktif değil
 	ErrMonitorNotFound           = NewServiceErrorWithKey(1010, "monitor_not_found", http.StatusNotFound)                // Monitor bulunamadı
 	ErrMonitorAlreadyExists      = NewServiceErrorWithKey(1011, "monitor_already_exists", http.StatusConflict)           // Monitor zaten var
-	ErrCaptchaInvalid            = NewServiceErrorWithKey(1012, "captcha_invalid", http.StatusBadRequest)                // Captcha hatalı
+	ErrCaptchaInvalid            = NewServiceErrorWithKey(1012, "captcha_invalid", http.StatusBadRequest)
+	// Captcha hatalı
 
 	// 2000: Sistem ile ilgili hatalar 500
 	ErrInvalidMFAType = NewServiceErrorWithKey(2001, "invalid_mfa_type") // MFA tipi hatalı

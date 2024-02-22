@@ -2,6 +2,7 @@ package social_service
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
@@ -41,18 +42,48 @@ func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO
 	if err != nil {
 		return
 	}
-	return s.socialRepositories.PostsRepository().Create(ctx, post)
+	id, err := s.socialRepositories.CategoriesRepository().GetByName(ctx, post.Category)
+	if err != nil {
+		return
+	}
+	postID, err := s.socialRepositories.PostsRepository().Create(ctx, post, id)
+	if err != nil {
+		return
+	}
+	for _, tag := range post.Tags {
+		err = s.socialRepositories.TagsRepository().Create(ctx, &domains.CrateTagDTO{
+			Name:   tag,
+			UserID: post.UserID,
+			PostID: postID,
+		})
+		if err != nil {
+			return err
+		}
+	}
+	for _, image := range post.Image {
+		err = s.socialRepositories.ImagesRepository().Create(ctx, &social_domain.Image{
+			UserID:   post.UserID,
+			PostID:   postID,
+			Path:     image,
+			Category: "post",
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return
 }
 
 func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePostDTO) (err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(newPost); err != nil {
 		return
 	}
-
 	if err != nil {
 		return
 	}
-	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID)
+	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID, newPost.UserID)
+
 	if err != nil {
 		return
 	}
@@ -74,7 +105,7 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePos
 
 func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error) {
 
-	_, err = s.socialRepositories.PostsRepository().GetByUserIDAndPostID(ctx, userID, postID)
+	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, postID, userID)
 	if err != nil {
 		return
 	}
@@ -82,26 +113,40 @@ func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID, userID u
 	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID, userID)
 }
 
-func (s *postService) GetPost(ctx context.Context, postID uuid.UUID) (post *domain.InPostDTO, err error) {
+func (s *postService) GetPost(ctx context.Context, postID, userID uuid.UUID) (post *domain.InPostDTO, err error) {
 
-	return s.socialRepositories.PostsRepository().GetByID(ctx, postID)
+	newPost, err := s.socialRepositories.PostsRepository().GetByID(ctx, postID, userID)
+	if err != nil {
+		return
+	}
+	newPost.Editable = true
+	newPost.Deleteable = true
+	// son 24 saat kontrolü yapılacak
+	if newPost.CreatedAt.AddDate(0, 0, 1).After(time.Now()) {
+		// burada hata dönmesi gerekiyor
+		newPost.Editable = false
+	}
+
+	return newPost, nil
+
 }
 
-func (s *postService) GetPosts(ctx context.Context, limit, offset uint64) (posts []*social_domain.Post, err error) {
+func (s *postService) GetPosts(ctx context.Context, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 
 	return s.socialRepositories.PostsRepository().GetAll(ctx, limit, offset)
 }
-func (s *postService) GetPostByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error) {
+
+func (s *postService) GetPostByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 
 	return s.socialRepositories.PostsRepository().GetByCategory(ctx, categoryID, limit, offset)
 }
 
-func (s *postService) GetPostByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error) {
+func (s *postService) GetPostByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 
 	return s.socialRepositories.PostsRepository().GetByTag(ctx, tagID, limit, offset)
 }
 
-func (s *postService) GetPostByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*social_domain.Post, err error) {
+func (s *postService) GetPostByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 
 	return s.socialRepositories.PostsRepository().GetByUserID(ctx, userID, limit, offset)
 }

@@ -8,7 +8,7 @@ import (
 // Comment ...
 type Comment struct {
 	base_domain.Base
-	UserID uuid.UUID `gorm:"cloumn:user_id" json:"user_id"`
-	PostID uuid.UUID `gorm:"cloumn:post_id" json:"post_id"`
-	Body   string    `gorm:"cloumn:body" json:"body"`
+	UserID uuid.UUID `db:"user_id" json:"user_id"`
+	PostID uuid.UUID `db:"post_id" json:"post_id"`
+	Body   string    `db:"body" json:"body"`
 }

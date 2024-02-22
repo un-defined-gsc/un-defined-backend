@@ -86,7 +86,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/social_domain.Post"
+                            "$ref": "#/definitions/domains.UpdatePostDTO"
                         }
                     }
                 ],
@@ -123,7 +123,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/social_domain.Post"
+                            "$ref": "#/definitions/domains.CratePostDTO"
                         }
                     }
                 ],
@@ -139,7 +139,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/social_domain.Post"
+                                            "$ref": "#/definitions/domains.CratePostDTO"
                                         }
                                     }
                                 }
@@ -730,6 +730,32 @@
         }
     },
     "definitions": {
+        "domains.CratePostDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domains.EmailCahangeDTO": {
             "type": "object",
             "required": [
@@ -870,6 +896,35 @@
                     "type": "string",
                     "minLength": 10,
                     "example": "12345678910"
+                }
+            }
+        },
+        "domains.UpdatePostDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },

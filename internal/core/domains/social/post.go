@@ -8,9 +8,8 @@ import (
 // Post is our main model for Posts
 type Post struct {
 	base_domain.Base
-	CategoryID uuid.UUID `json:"category_id"`
-	UserID     uuid.UUID `json:"user_id"`
-	Title      string    `json:"title"`
-	Content    string    `json:"body"`
-	Tags       []string  `json:"tags"`
+	CategoryID uuid.UUID `db:"category_id"json:"category_id"`
+	UserID     uuid.UUID `db:"user_id"json:"user_id"`
+	Title      string    `db:"title"json:"title"`
+	Content    string    `db:"content"json:"body"`
 }
