@@ -12,7 +12,7 @@ import (
 type IPostsRepository interface {
 
 	// Post Table Commands //
-	Create(ctx context.Context, post *domains.CratePostDTO) (err error)
+	Create(ctx context.Context, post *domains.CratePostDTO, categoryID uuid.UUID) (postID uuid.UUID, err error)
 	Update(ctx context.Context, newPost *domains.UpdatePostDTO) (err error)
 	DeleteByID(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error)
 
@@ -41,6 +41,7 @@ type ICategoriesRepository interface {
 	// Category Table Queries //
 	GetByID(ctx context.Context, categoryID uuid.UUID) (category *social_domain.Category, err error)
 	GetAll(ctx context.Context, limit, offset uint64) (categories []*social_domain.Category, err error)
+	GetByName(ctx context.Context, name string) (category uuid.UUID, err error)
 	// End Category Table Queries //
 
 }
@@ -63,7 +64,7 @@ type ICommentsRepository interface {
 type ITagsRepository interface {
 
 	// Tag Table Commands //
-	Create(ctx context.Context, tag *social_domain.Tag) (err error)
+	Create(ctx context.Context, tag *domains.CrateTagDTO) (err error)
 	DeleteByID(ctx context.Context, tagID uuid.UUID) (err error)
 	// End Tag Table Commands //
 

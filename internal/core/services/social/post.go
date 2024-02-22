@@ -41,7 +41,26 @@ func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO
 	if err != nil {
 		return
 	}
-	return s.socialRepositories.PostsRepository().Create(ctx, post)
+	id, err := s.socialRepositories.CategoriesRepository().GetByName(ctx, post.Category)
+	if err != nil {
+		return
+	}
+	postID, err := s.socialRepositories.PostsRepository().Create(ctx, post, id)
+	if err != nil {
+		return
+	}
+	for _, tag := range post.Tags {
+		err = s.socialRepositories.TagsRepository().Create(ctx, &domains.CrateTagDTO{
+			Name:   tag,
+			UserID: post.UserID,
+			PostID: postID,
+		})
+		if err != nil {
+			return err
+		}
+
+
+	return
 }
 
 func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePostDTO) (err error) {

@@ -42,7 +42,15 @@ type InPostDTO struct {
 	Tags       []TagDTO     `json:"tags"`
 	CreatedAt  time.Time    `json:"created_at"`
 }
-
+type CratePostDTO struct {
+	ID       uuid.UUID `json:"-" `
+	Title    string    `json:"title" validate:"required" example:"title"`
+	Content  string    `json:"content" validate:"required" example:"content"`
+	Category string    `json:"category" validate:"required,oneof=question problem story" example:"story"`
+	UserID   uuid.UUID `json:"-"`
+	Tags     []string  `json:"tags" example:"tags"`
+	Image    []string  `json:"image" example:"image"`
+}
 type CommentDTO struct {
 	ID        uuid.UUID `gorm:"primary_key" json:"id"`
 	Name      string    `json:"name"`
@@ -59,16 +67,6 @@ type PostsDTO struct {
 	Posts []PostDTO `json:"posts"`
 }
 
-type CratePostDTO struct {
-	ID       uuid.UUID `json:"-"`
-	Title    string    `json:"title" validate:"required"`
-	Content  string    `json:"content" validate:"required"`
-	Category string    `json:"category" validate:"required"`
-	UserID   uuid.UUID `json:"-" `
-	Tags     []string  `json:"tags"`
-	Image    []string  `json:"image"`
-}
-
 type UpdatePostDTO struct {
 	ID       uuid.UUID `json:"id" validate:"required"`
 	Title    string    `json:"title"`
@@ -77,4 +75,10 @@ type UpdatePostDTO struct {
 	Category string    `json:"category"`
 	Tags     []string  `json:"tags"`
 	Image    []string  `json:"image"`
+}
+
+type CrateTagDTO struct {
+	Name   string    `json:"name" validate:"required"`
+	UserID uuid.UUID `json:"-"`
+	PostID uuid.UUID `json:"-"`
 }

@@ -21,7 +21,7 @@ func NewPostRepository(dbpool *pgxpool.Pool) *PostRepository {
 	}
 }
 
-func (r *PostRepository) Create(ctx context.Context, post *domains.CratePostDTO) (err error) {
+func (r *PostRepository) Create(ctx context.Context, post *domains.CratePostDTO, categoryID uuid.UUID) (postID uuid.UUID, err error) {
 	query := `
 		INSERT INTO t_posts (
 			title,
@@ -29,12 +29,12 @@ func (r *PostRepository) Create(ctx context.Context, post *domains.CratePostDTO)
 			category_id,
 			user_id
 			) VALUES ( $1, $2, $3, $4) returning id`
-	err = r.dbpool.QueryRow(ctx, query, post.Title, post.Content, post.Category, post.UserID).Scan(&post.ID)
+	err = r.dbpool.QueryRow(ctx, query, post.Title, post.Content, categoryID, post.UserID).Scan(&post.ID)
 	if err != nil {
 		pgErr := &pgconn.PgError{}
 		if errors.As(err, &pgErr) {
 			if pgErr.Code == "23505" {
-				return service_errors.ErrDataDuplication
+				return uuid.Nil, service_errors.ErrDataDuplication
 			}
 		}
 	}
