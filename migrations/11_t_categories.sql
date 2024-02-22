@@ -17,3 +17,4 @@ DROP TABLE t_categories;
 INSERT INTO t_categories (name) VALUES ('story');
 INSERT INTO t_categories (name) VALUES ('problem');
 INSERT INTO t_categories (name) VALUES ('question');
+INSERT INTO t_categories (name) VALUES ('jobadvert');

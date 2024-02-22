@@ -9,12 +9,12 @@ import (
 
 func (h *PrivateHandler) initPostRoutes(root fiber.Router) {
 	post := root.Group("/post")
-	post.Use(h.authMiddleware)
 	post.Post("/", h.CreatePost)
 	post.Put("/", h.UpdatePost)
 	post.Delete("/:id<guid>", h.DeletePost)
-	post.Get("/:id<guid>", h.GetPost)
 	post.Get("/", h.GetPosts)
+	post.Get("/:id<guid>", h.GetPost)
+
 }
 
 // @Tags Post
@@ -117,7 +117,12 @@ func (h *PrivateHandler) GetPost(c *fiber.Ctx) error {
 func (h *PrivateHandler) GetPosts(c *fiber.Ctx) error {
 	limit := c.QueryInt("limit")
 	offset := c.QueryInt("offset")
-
+	if limit == 0 {
+		limit = 10
+	}
+	if offset == 0 {
+		offset = 0
+	}
 	posts, err := h.coreAdapter.SocialServices().PostsService().GetPosts(c.Context(), uint64(limit), uint64(offset))
 	if err != nil {
 		return err

@@ -7,7 +7,7 @@ import (
 
 type Tag struct {
 	base_domain.Base
-	UserID uuid.UUID `gorm:"column:user_id" json:"user_id"`
-	PostID uuid.UUID `gorm:"column:post_id" json:"post_id"`
-	Tag    string    `gorm:"column:tag" json:"tag"`
+	UserID uuid.UUID `db:"user_id" json:"user_id"`
+	PostID uuid.UUID `db:"post_id" json:"post_id"`
+	Tag    string    `db:"tag" json:"tag"`
 }

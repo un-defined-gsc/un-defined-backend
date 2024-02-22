@@ -9,18 +9,17 @@ import (
 //----- Social ------//
 
 type CategoryDTO struct {
-	ID   uuid.UUID `gorm:"primary_key" json:"id"`
-	Name string    `json:"category"`
+	Name string `json:"category"`
 }
 
 type PostDTO struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
+	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
 	Surname   string    `json:"surname"`
 	Category  string    `json:"category"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
-	UserID    uuid.UUID `json:"user_id"`
+	UserID    uuid.UUID `json:"-"`
 	CreatedAt time.Time `json:"created_at"`
 	Likes     uint64    `json:"likes"`
 	Comments  uint64    `json:"comments"`
@@ -46,13 +45,13 @@ type CratePostDTO struct {
 	ID       uuid.UUID `json:"-" `
 	Title    string    `json:"title" validate:"required" example:"title"`
 	Content  string    `json:"content" validate:"required" example:"content"`
-	Category string    `json:"category" validate:"required,oneof=question problem story" example:"story"`
+	Category string    `json:"category" validate:"required,oneof=question problem story jobadvert" example:"story"`
 	UserID   uuid.UUID `json:"-"`
 	Tags     []string  `json:"tags" example:"tags"`
 	Image    []string  `json:"image" example:"image"`
 }
 type CommentDTO struct {
-	ID        uuid.UUID `gorm:"primary_key" json:"id"`
+	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
 	Surname   string    `json:"surname"`
 	Body      string    `json:"body"`

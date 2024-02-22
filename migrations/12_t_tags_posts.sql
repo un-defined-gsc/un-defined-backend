@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS t_tags_posts (
+CREATE TABLE IF NOT EXISTS t_tags (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   user_id uuid NOT NULL,
   post_id uuid NOT NULL,

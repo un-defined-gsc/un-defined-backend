@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS t_images (
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DROP TABLE t_images;
 -- +goose StatementEnd
