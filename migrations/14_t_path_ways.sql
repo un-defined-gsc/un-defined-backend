@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS t_path_ways (
   roadmap_id  uuid NOT NULL ,
   name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
-  parent_path uuid ,
+  parent_id uuid ,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 );

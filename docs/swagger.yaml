@@ -219,10 +219,10 @@ definitions:
     - lang
     - lastname
     type: object
-host: 127.0.0.1:8080
+host: 127.0.0.1
 info:
   contact: {}
-  description: API Service for ProjectMonWeb
+  description: API Service for Un-Defined
   title: API Service
   version: v1
 paths:

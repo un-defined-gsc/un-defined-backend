@@ -92,7 +92,9 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
+
                             "$ref": "#/definitions/domains.UpdatePostDTO"
+
                         }
                     }
                 ],
@@ -129,7 +131,11 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
+<<<<<<< HEAD
                             "$ref": "#/definitions/domains.CratePostDTO"
+=======
+                            "$ref": "#/definitions/social_domain.Post"
+>>>>>>> main
                         }
                     }
                 ],
@@ -145,7 +151,11 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
                                             "$ref": "#/definitions/domains.CratePostDTO"
+=======
+                                            "$ref": "#/definitions/social_domain.Post"
+>>>>>>> main
                                         }
                                     }
                                 }
@@ -1056,11 +1066,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1",
-	Host:             "127.0.0.1:8080",
+	Host:             "127.0.0.1",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "API Service",
-	Description:      "API Service for ProjectMonWeb",
+	Description:      "API Service for Un-Defined",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -14,7 +14,7 @@ type User struct {
 	Password      string     `db:"password" json:"password,omitempty"`
 	FirstName     string     `db:"first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
 	LastName      string     `db:"last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`
-	Lang          string     `db:"lang" json:"lang" validate:"required,oneof=en tr" example:"tr"` //🤘
+	Lang          string     `db:"lang" json:"lang" example:"tr"` //🤘
 	Email         string     `db:"email" json:"email" validate:"omitempty,email" example:"resul@mon.time"`
 	EmailVerified bool       `db:"email_verified" json:"email_verified"`
 	MasterAdmin   bool       `db:"master_admin" json:"-"`

@@ -1,4 +1,4 @@
-# Monitoring Time Management Panel English Translation
+# UN-DEFINED Management Panel English Translation
 # Version: 1.0.0
 
 
@@ -6,9 +6,9 @@
 
 # Delivery Errors
 # Routes
-routes.private.hello: "Monitoring Time Private Routes - Pong"
-routes.public.hello: "Monitoring Time Public Routes - Pong"
-routes.v1.hello: " Monitoring Time Management API v1 - Pong"
+routes.private.hello: "UN-DEFINED Private Routes - Pong"
+routes.public.hello: "UN-DEFINED Public Routes - Pong"
+routes.v1.hello: " UN-DEFINED Management API v1 - Pong"
 # SQL
 sql.no_rows: "No rows found"
 # Location
