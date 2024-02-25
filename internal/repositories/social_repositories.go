@@ -22,6 +22,7 @@ func NewSocialRepositories(dbpool *pgxpool.Pool) social_ports.ISocialRepositorie
 		tagsRepository:       social_repositories.NewTagsRepository(dbpool),
 		imageRepository:      social_repositories.NewImagesRepository(dbpool),
 		likesRepository:      social_repositories.NewLikesRepository(dbpool),
+		commentsRepository:   social_repositories.NewCommentsRepository(dbpool),
 	}
 }
 

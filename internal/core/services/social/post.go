@@ -46,7 +46,7 @@ func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO
 	if err != nil {
 		return
 	}
-	postID, err := s.socialRepositories.PostsRepository().Create(ctx, post, id)
+	err = s.socialRepositories.PostsRepository().Create(ctx, post, id)
 	if err != nil {
 		return
 	}
@@ -54,7 +54,7 @@ func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO
 		err = s.socialRepositories.TagsRepository().Create(ctx, &domains.CrateTagDTO{
 			Name:   tag,
 			UserID: post.UserID,
-			PostID: postID,
+			PostID: post.ID,
 		})
 		if err != nil {
 			return err
@@ -63,7 +63,7 @@ func (s *postService) CreatePost(ctx context.Context, post *domains.CratePostDTO
 	for _, image := range post.Image {
 		err = s.socialRepositories.ImagesRepository().Create(ctx, &social_domain.Image{
 			UserID:   post.UserID,
-			PostID:   postID,
+			PostID:   post.ID,
 			Path:     image,
 			Category: "post",
 		})
@@ -82,6 +82,7 @@ func (s *postService) UpdatePost(ctx context.Context, newPost *domains.UpdatePos
 	if err != nil {
 		return
 	}
+
 	_, err = s.socialRepositories.PostsRepository().GetByID(ctx, newPost.ID, newPost.UserID)
 
 	if err != nil {
@@ -132,7 +133,7 @@ func (s *postService) GetPost(ctx context.Context, postID, userID uuid.UUID, lim
 		newPost.Editable = false
 	}
 
-	return newPost, nil
+	return &newPost, nil
 
 }
 
@@ -141,17 +142,7 @@ func (s *postService) GetPosts(ctx context.Context, limit, offset uint64) (posts
 	return s.socialRepositories.PostsRepository().GetAll(ctx, limit, offset)
 }
 
-func (s *postService) GetPostByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
+func (s *postService) GetPostByFilter(ctx context.Context, categoryID, userID uuid.UUID, tag string, limit, offset uint64) (posts []*domains.PostDTO, err error) {
 
-	return s.socialRepositories.PostsRepository().GetByCategory(ctx, categoryID, limit, offset)
-}
-
-func (s *postService) GetPostByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
-
-	return s.socialRepositories.PostsRepository().GetByTag(ctx, tagID, limit, offset)
-}
-
-func (s *postService) GetPostByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error) {
-
-	return s.socialRepositories.PostsRepository().GetByUserID(ctx, userID, limit, offset)
+	return s.socialRepositories.PostsRepository().GetByPostFilter(ctx, categoryID, userID, tag, limit, offset)
 }
