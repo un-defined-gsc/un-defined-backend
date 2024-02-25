@@ -93,7 +93,20 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	}
 	nowTime := time.Now().UTC()
 	sess.LastLogin = &nowTime
-	userdata = *user
+	userdata = user_domain.User{
+		ID:            user.ID,
+		Email:         user.Email,
+		EmailVerified: user.EmailVerified,
+		MasterAdmin:   user.MasterAdmin,
+		Lang:          user.Lang,
+		MFAEnabled:    user.MFAEnabled,
+		Disabled:      user.Disabled,
+		DisabledAt:    user.DisabledAt,
+		LastLogin:     &nowTime,
+		FirstName:     user.FirstName,
+		LastName:      user.LastName,
+		CreatedAt:     user.CreatedAt,
+	}
 	return
 }
 
