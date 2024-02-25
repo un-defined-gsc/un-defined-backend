@@ -15,6 +15,9 @@ func (h *PrivateHandler) initRoadmapRoutes(root fiber.Router) {
 	category.Put("/:id<guid>", h.RoadmapUpdateCategory)
 	category.Delete("/:id<guid>", h.RoadmapDeleteCategory)
 
+	maps := roadmap.Group("/maps")
+	maps.Get("/:categor_id<guid>?", h.GetRoadmaps)
+
 }
 
 // @Tags Roadmap/Category
@@ -105,4 +108,18 @@ func (h *PrivateHandler) RoadmapUpdateCategory(c *fiber.Ctx) error {
 		return err
 	}
 	return h.responseJson(200, response_types.RequestSuccess, nil)
+}
+
+//
+
+func (h *PrivateHandler) GetRoadmaps(c *fiber.Ctx) error {
+	category_id := uuid.Nil
+	if c.Params("categor_id") != "" {
+		category_id = uuid.MustParse(c.Params("category_id"))
+	}
+	roadmaps, err := h.coreAdapter.RoadmapServices().RoadmapService().SearchRoadmap(c.Context(), category_id)
+	if err != nil {
+		return err
+	}
+	return h.responseJson(200, response_types.RequestSuccess, roadmaps)
 }

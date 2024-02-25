@@ -11,7 +11,7 @@ type IRoadmapService interface {
 	CreateRoadmap(ctx context.Context, roadmap *roadmap_domain.Roadmap) (err error)
 	UpdateRoadmap(ctx context.Context, newRoadmap *roadmap_domain.Roadmap) (err error)
 	DeleteRoadmap(ctx context.Context, roadmapID uuid.UUID) (err error)
-	SearchRoadmap(ctx context.Context, filter *roadmap_domain.Roadmap) (roadmaps []*roadmap_domain.Roadmap, err error)
+	SearchRoadmap(ctx context.Context, category_id uuid.UUID) (roadmaps []*roadmap_domain.Roadmap, err error)
 }
 
 type IPathWayService interface {

@@ -52,8 +52,8 @@ func (s *roadmmapService) DeleteRoadmap(ctx context.Context, roadmapID uuid.UUID
 	return
 }
 
-func (s *roadmmapService) SearchRoadmap(ctx context.Context, filter *roadmap_domain.Roadmap) (roadmaps []*roadmap_domain.Roadmap, err error) {
-	roadmaps, err = s.roadmapRepository.Roadmap().Filter(ctx, filter)
+func (s *roadmmapService) SearchRoadmap(ctx context.Context, categor_id uuid.UUID) (roadmaps []*roadmap_domain.Roadmap, err error) {
+	roadmaps, err = s.roadmapRepository.Roadmap().Filter(ctx, &roadmap_domain.Roadmap{CategoryID: categor_id})
 	if err != nil {
 		return
 	}
