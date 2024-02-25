@@ -8,7 +8,7 @@ import (
 // @title API Service
 // @description API Service for Un-Defined
 // @version v1
-// @host 127.0.0.1
+// @host 127.0.0.1:8080
 // @BasePath /api/v1
 // @securityDefinitions.apikey ApiKeyAuth
 // @in cookie
