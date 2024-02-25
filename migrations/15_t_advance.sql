@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS t_advance (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE t_submissions;
+DROP TABLE t_advance;
 -- +goose StatementEnd

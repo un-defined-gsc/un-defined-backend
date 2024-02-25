@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS t_tags (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE t_tags_posts;
+DROP TABLE t_tags;
 -- +goose StatementEnd
