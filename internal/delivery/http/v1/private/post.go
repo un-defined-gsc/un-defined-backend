@@ -94,7 +94,7 @@ func (h *PrivateHandler) DeletePost(c *fiber.Ctx) error {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param id path string true "Post ID"
-// @Success 200 {object} error_handler.BaseResponse{data=domain.InPostDTO}
+// @Success 200 {object} error_handler.BaseResponse{data=domains.InPostDTO}
 // @Router /private/post/{id} [get]
 func (h *PrivateHandler) GetPost(c *fiber.Ctx) error {
 	postID := c.Params("id")
