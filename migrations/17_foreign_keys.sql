@@ -1,16 +1,13 @@
 -- +goose Up
 
+
+
 ALTER TABLE t_action_log  ADD CONSTRAINT fk_action_logs_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE NO ACTION;
 ALTER TABLE t_login_logs ADD CONSTRAINT fk_login_logs_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE NO ACTION;
 ALTER TABLE t_banned ADD CONSTRAINT fk_banned_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE NO ACTION;
 ALTER TABLE t_mfa_settings ADD CONSTRAINT fk_mfa_settings_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
 
 
-ALTER TABLE t_submissions ADD CONSTRAINT fk_submissions_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
-ALTER TABLE t_submissions ADD CONSTRAINT fk_submissions_paths FOREIGN KEY (path_way_id) REFERENCES t_path_ways(id) ON DELETE CASCADE;
-
-ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_roadmaps FOREIGN KEY (roadmap_id) REFERENCES t_roadmaps (id) ON DELETE CASCADE;
-ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_id_path_ways_id FOREIGN KEY (parent_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
 
 ALTER TABLE t_tags ADD CONSTRAINT fk_tags_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
 ALTER TABLE t_tags ADD CONSTRAINT fk_tags_posts FOREIGN KEY (post_id) REFERENCES t_posts (id) ON DELETE CASCADE;
@@ -29,18 +26,31 @@ ALTER TABLE t_posts ADD CONSTRAINT fk_posts_categories FOREIGN KEY (category_id)
 
 ALTER TABLE t_images ADD CONSTRAINT fk_images_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
 ALTER TABLE t_images ADD CONSTRAINT fk_images_posts FOREIGN KEY (post_id) REFERENCES t_posts (id) ON DELETE CASCADE;
+
+
+
+ALTER TABLE t_submissions ADD CONSTRAINT fk_submissions_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
+ALTER TABLE t_submissions ADD CONSTRAINT fk_submissions_paths FOREIGN KEY (roadmap_id) REFERENCES t_roadmaps (id) ON DELETE CASCADE;
+
+ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_roadmaps FOREIGN KEY (roadmap_id) REFERENCES t_roadmaps (id) ON DELETE CASCADE;
+ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_id_path_ways_id FOREIGN KEY (parent_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
+
+ALTER TABLE t_roadmaps ADD CONSTRAINT fk_roadmaps_path_id FOREIGN KEY (first_path_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
+
+
+ALTER TABLE t_advance ADD CONSTRAINT fk_advance_roadmaps FOREIGN KEY (roadmap_id) REFERENCES t_roadmaps (id) ON DELETE CASCADE;
+ALTER TABLE t_advance ADD CONSTRAINT fk_advance_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
+ALTER TABLE t_advance ADD CONSTRAINT fk_advance_path_ways FOREIGN KEY (path_way_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
+
+
+
+
 -- +goose Down
 
 ALTER TABLE t_action_log DROP CONSTRAINT fk_action_logs_users;
 ALTER TABLE t_login_logs DROP CONSTRAINT fk_login_logs_users;
 ALTER TABLE t_banned DROP CONSTRAINT fk_banned_users;
 ALTER TABLE t_mfa_settings DROP CONSTRAINT fk_mfa_settings_users;
-
-ALTER TABLE t_submissions DROP CONSTRAINT fk_submissions_users;
-ALTER TABLE t_submissions DROP CONSTRAINT fk_submissions_paths;
-
-ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_roadmaps;
-ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_id_path_ways_id;
 
 ALTER TABLE t_tags DROP CONSTRAINT fk_tags_users;
 ALTER TABLE t_tags DROP CONSTRAINT fk_tags_posts;
@@ -56,5 +66,18 @@ ALTER TABLE t_posts DROP CONSTRAINT fk_posts_categories;
 
 ALTER TABLE t_images DROP CONSTRAINT fk_images_users;
 ALTER TABLE t_images DROP CONSTRAINT fk_images_posts;
+
+ALTER TABLE t_submissions DROP CONSTRAINT fk_submissions_users;
+ALTER TABLE t_submissions DROP CONSTRAINT fk_submissions_paths;
+
+ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_roadmaps;
+ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_id_path_ways_id;
+
+ALTER TABLE t_roadmaps DROP CONSTRAINT fk_roadmaps_path_id;
+
+ALTER TABLE t_advance DROP CONSTRAINT fk_advance_roadmaps;
+ALTER TABLE t_advance DROP CONSTRAINT fk_advance_users;
+ALTER TABLE t_advance DROP CONSTRAINT fk_advance_path_ways;
+
 
 
