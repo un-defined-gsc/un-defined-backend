@@ -24,6 +24,7 @@ type IPathWayRepository interface {
 type ISubmissionRepository interface {
 	Create(ctx context.Context, submission *roadmap_domain.Submission) (err error)
 	Delete(ctx context.Context, submissionID uuid.UUID) (err error)
+	Filter(ctx context.Context, filter *roadmap_domain.Submission) (submissions []*roadmap_domain.Submission, err error)
 }
 
 type IAdvanceRepository interface {
@@ -32,9 +33,17 @@ type IAdvanceRepository interface {
 	Filter(ctx context.Context, filter *roadmap_domain.Advance) (advances []*roadmap_domain.Advance, err error)
 }
 
+type ICategoryRepository interface {
+	Create(ctx context.Context, category *roadmap_domain.Category) (err error)
+	Update(ctx context.Context, newCategory *roadmap_domain.Category) (err error)
+	Delete(ctx context.Context, categoryID uuid.UUID) (err error)
+	Filter(ctx context.Context, filter *roadmap_domain.Category) (categories []*roadmap_domain.Category, err error)
+}
+
 type IRoadmapRepositories interface {
 	Roadmap() IRoadmapRepository
 	PathWay() IPathWayRepository
 	Submission() ISubmissionRepository
 	Advance() IAdvanceRepository
+	Category() ICategoryRepository
 }

@@ -36,13 +36,14 @@ func (r *submissionRepository) Delete(ctx context.Context, submissionID uuid.UUI
 
 func (r *submissionRepository) Filter(ctx context.Context, filter *roadmap_domain.Submission) (submissions []*roadmap_domain.Submission, err error) {
 	query := `SELECT * FROM t_submissions WHERE
-	($1::uuid IS uuid_nil() OR roadmap_id = $1) AND
-	($3::uuid IS uuid_nil() OR user_id = $3)
+	($1::uuid  = uuid_nil() OR roadmap_id = $1) AND
+	($3::uuid  = uuid_nil() OR user_id = $3)
 	`
 	rows, err := r.dbpool.Query(ctx, query, filter.RoadmapID, filter.UserID)
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	submissions, err = pgx.CollectRows(rows, pgx.RowToAddrOfStructByName[roadmap_domain.Submission])
 	return
 }

@@ -2,21 +2,29 @@ package core
 
 import (
 	deps_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/deps"
+	roadmap_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/roadmap"
 	social_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/social"
 	user_ports "github.com/un-defined-gsc/un-defined-backend/internal/core/ports/user"
 )
 
 type CoreAdapter struct {
-	usersServices  user_ports.IUsersServices
-	depsServices   deps_ports.IDepsServices
-	socialServices social_ports.ISocialServices
+	usersServices   user_ports.IUsersServices
+	depsServices    deps_ports.IDepsServices
+	socialServices  social_ports.ISocialServices
+	roadmapServices roadmap_ports.IRoadmapServices
 }
 
-func NewCoreAdapter(usersServices user_ports.IUsersServices, depsServices deps_ports.IDepsServices, socialService social_ports.ISocialServices) *CoreAdapter {
+func NewCoreAdapter(
+	usersServices user_ports.IUsersServices,
+	depsServices deps_ports.IDepsServices,
+	socialService social_ports.ISocialServices,
+	roadmapServices roadmap_ports.IRoadmapServices,
+) *CoreAdapter {
 	return &CoreAdapter{
-		usersServices:  usersServices,
-		depsServices:   depsServices,
-		socialServices: socialService,
+		usersServices:   usersServices,
+		depsServices:    depsServices,
+		socialServices:  socialService,
+		roadmapServices: roadmapServices,
 	}
 }
 
@@ -29,4 +37,8 @@ func (c *CoreAdapter) DepsServices() deps_ports.IDepsServices {
 }
 func (c *CoreAdapter) SocialServices() social_ports.ISocialServices {
 	return c.socialServices
+}
+
+func (c *CoreAdapter) RoadmapServices() roadmap_ports.IRoadmapServices {
+	return c.roadmapServices
 }

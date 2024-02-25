@@ -34,10 +34,10 @@ func (r *advanceRepository) Delete(ctx context.Context, advanceId uuid.UUID) (er
 
 func (r *advanceRepository) Filter(ctx context.Context, filter *roadmap_domain.Advance) (advances []*roadmap_domain.Advance, err error) {
 	query := `SELECT * FROM t_advance WHERE
-		($1::uuid IS uuid_nil() OR roadmap_id = $1) AND
-		($2::uuid IS uuid_nil() OR user_id = $2) AND
-		($3::uuid IS uuid_nil() OR pathway_id = $3) AND
-		($4::text IS "" OR advance_type = ILIKE $4 || '%')
+		($1::uuid = uuid_nil() OR roadmap_id = $1) AND
+		($2::uuid = uuid_nil() OR user_id = $2) AND
+		($3::uuid = uuid_nil() OR pathway_id = $3) AND
+		($4::text = "" OR advance_type = ILIKE $4 || '%')
 		`
 	rows, err := r.dbpool.Query(ctx, query, filter.RoadmapID, filter.UserID, filter.PathWayID, filter.AdvanceType)
 	if err != nil {

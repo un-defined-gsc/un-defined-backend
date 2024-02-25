@@ -26,22 +26,23 @@ func NewRoadmapRepository(dbpool *pgxpool.Pool) roadmap_ports.IRoadmapRepository
 func (r *roadmapRepository) Create(ctx context.Context, roadmap *roadmap_domain.Roadmap) (err error) {
 	query := `INSERT INTO 
 	t_roadmaps 
-	(name, description, first_path_id) VALUES ($1, $2, $3) returning id`
-	err = r.dbpool.QueryRow(ctx, query, roadmap.Name, roadmap.Description, roadmap.FirstPathID).Scan(&roadmap.ID)
+	(name, description, first_path_id,category_id) VALUES ($1, $2, $3,$4) returning id`
+	err = r.dbpool.QueryRow(ctx, query, roadmap.Name, roadmap.Description, roadmap.FirstPathID, roadmap.CategoryID).Scan(&roadmap.ID)
 	if err != nil {
 		pgErr := &pgconn.PgError{}
 		if errors.As(err, &pgErr) {
 			if pgErr.Code == "23505" {
 				return service_errors.ErrDataDuplication
 			}
+			//Burada başka bir hata kodu dönerse ona göre bir hata döndürülebilir.
 		}
 	}
 	return
 }
 
 func (r *roadmapRepository) Update(ctx context.Context, newRoadmap *roadmap_domain.Roadmap) (err error) {
-	query := `UPDATE t_roadmaps SET name = $1, description = $2, first_path_id = $3 WHERE id = $4`
-	_, err = r.dbpool.Exec(ctx, query, newRoadmap.Name, newRoadmap.Description, newRoadmap.FirstPathID, newRoadmap.ID)
+	query := `UPDATE t_roadmaps SET name = $1, description = $2, first_path_id = $3, category_id = $4 WHERE id = $5`
+	_, err = r.dbpool.Exec(ctx, query, newRoadmap.Name, newRoadmap.Description, newRoadmap.FirstPathID, newRoadmap.CategoryID, newRoadmap.ID)
 	return
 }
 
@@ -52,16 +53,19 @@ func (r *roadmapRepository) Delete(ctx context.Context, roadmapID uuid.UUID) (er
 }
 
 func (r *roadmapRepository) Filter(ctx context.Context, filter *roadmap_domain.Roadmap) (roadmaps []*roadmap_domain.Roadmap, err error) {
+
 	query := `SELECT * FROM t_roadmaps WHERE
-	($1::uuid IS uuid_nil() OR id = $1) AND
-	($2::text IS NULL OR name ILIKE $2 || '%') AND
-	($3::text IS NULL OR description ILIKE $3 || '%') AND
-	($4::uuid IS NULL OR first_path_id = $4)
+	($1::uuid = uuid_nil() OR id = $1) AND
+	($2::text = "" OR name ILIKE $2 || '%') AND
+	($3::text = "" OR description ILIKE $3 || '%') AND
+	($4::uuid = "" OR first_path_id = $4)
+	($5::uuid = uuid_nil() OR category_id = $5)
 	`
-	rows, err := r.dbpool.Query(ctx, query, filter.ID, filter.Name, filter.Description, filter.FirstPathID)
+	rows, err := r.dbpool.Query(ctx, query, filter.ID, filter.Name, filter.Description, filter.FirstPathID, filter.CategoryID)
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	roadmaps, err = pgx.CollectRows(rows, pgx.RowToAddrOfStructByName[roadmap_domain.Roadmap])
-	return nil, nil
+	return
 }

@@ -8,7 +8,8 @@ import (
 // Roadmap ...
 type Roadmap struct {
 	base_domain.Base
-	Name        string     `db:"name" json:"name"`
-	Description string     `db:"description" json:"description"`
-	FirstPathID *uuid.UUID `db:"first_path_id" json:"first_path_id"`
+	Name        string    `db:"name" json:"name" validate:"required"`
+	CategoryID  uuid.UUID `db:"category" json:"category" validate:"required,uuid"`
+	Description string    `db:"description" json:"description" validate:"required"`
+	FirstPathID uuid.UUID `db:"first_path_id" json:"first_path_id" validate:"required,uuid"`
 }

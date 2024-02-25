@@ -230,6 +230,17 @@ definitions:
       status_code:
         type: integer
     type: object
+  roadmap_domain.Category:
+    properties:
+      category_name:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+    required:
+    - category_name
+    type: object
   social_domain.Post:
     properties:
       body:
@@ -655,6 +666,85 @@ paths:
       summary: Get posts by user
       tags:
       - Post
+  /private/roadmap/categories:
+    get:
+      consumes:
+      - application/json
+      description: Get categories
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: ID
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/error_handler.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/roadmap_domain.Category'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get categories
+      tags:
+      - Roadmap/Category
+    post:
+      consumes:
+      - application/json
+      description: Create category
+      parameters:
+      - description: Category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/roadmap_domain.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create category
+      tags:
+      - Roadmap/Category
+  /private/roadmap/categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete category
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete category
+      tags:
+      - Roadmap/Category
   /private/user/enable/{key}:
     get:
       consumes:

@@ -7,8 +7,8 @@ import (
 
 type Advance struct {
 	base_domain.Base
-	RoadmapID   *uuid.UUID `db:"roadmap_id" json:"roadmap_id"`
-	PathWayID   *uuid.UUID `db:"pathway_id" json:"pathway_id"`
-	UserID      *uuid.UUID `db:"user_id" json:"user_id"`
-	AdvanceType string     `db:"advance_type" json:"advance_type"`
+	RoadmapID   uuid.UUID `db:"roadmap_id" json:"roadmap_id"`
+	PathWayID   uuid.UUID `db:"pathway_id" json:"pathway_id"`
+	UserID      uuid.UUID `db:"user_id" json:"user_id"`
+	AdvanceType string    `db:"advance_type" json:"advance_type"`
 }

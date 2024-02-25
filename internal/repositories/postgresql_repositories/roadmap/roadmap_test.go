@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/un-defined-gsc/un-defined-backend/internal/config"
+	base_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/base"
 	roadmap_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/roadmap"
 	"github.com/un-defined-gsc/un-defined-backend/pkg/db_adapters"
 )
@@ -28,14 +29,16 @@ func TestMain(t *testing.T) {
 	roadmapRepo = &roadmapRepository{
 		dbpool: dbpool,
 	}
-	testCRUD(t)
+	testCRUD_Roadmap(t)
 }
 
-func testCRUD(t *testing.T) {
+func testCRUD_Roadmap(t *testing.T) {
 	mockRoadmapObj := &roadmap_domain.Roadmap{
 		Name:        "Test Roadmap",
 		Description: "Test Description",
-		FirstPathID: nil,
+		Base: base_domain.Base{
+			ID: uuid.New(),
+		},
 	}
 	testCreate := t.Run("CRUD Create",
 		func(t *testing.T) {
@@ -54,7 +57,7 @@ func testCRUD(t *testing.T) {
 			// Test for Update method
 			mockRoadmapObj.Name = "Test Roadmap Updated"
 			mockRoadmapObj.Description = "Test Description Updated"
-			mockRoadmapObj.FirstPathID = &uuid.Nil
+
 			t.Logf("Updating Roadmap: %v", mockRoadmapObj)
 			err := roadmapRepo.Update(context.Background(), mockRoadmapObj)
 			if err != nil {
@@ -64,11 +67,23 @@ func testCRUD(t *testing.T) {
 	if !testUpdate {
 		t.Error("TestUpdate failed")
 	}
+	testFilter := t.Run("CRUD Filter",
+		func(t *testing.T) {
+			// Test for Filter method
+			t.Logf("Filtering Roadmap: %v", mockRoadmapObj)
+			_, err := roadmapRepo.Filter(context.Background(), mockRoadmapObj)
+			if err != nil {
+				t.Error(err)
+			}
+		})
+	if !testFilter {
+		t.Error("TestFilter failed")
+	}
 	testDelete := t.Run("CRUD Delete",
 		func(t *testing.T) {
 			// Test for Delete method
 			t.Logf("Deleting Roadmap: %v", mockRoadmapObj)
-			err := roadmapRepo.Delete(context.Background(), *mockRoadmapObj.ID)
+			err := roadmapRepo.Delete(context.Background(), mockRoadmapObj.ID)
 			if err != nil {
 				t.Error(err)
 			}
@@ -77,4 +92,5 @@ func testCRUD(t *testing.T) {
 	if !testDelete {
 		t.Error("TestDelete failed")
 	}
+
 }

@@ -36,7 +36,7 @@ ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_roadmaps FOREIGN KEY (roadma
 ALTER TABLE t_path_ways ADD CONSTRAINT fk_path_ways_id_path_ways_id FOREIGN KEY (parent_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
 
 ALTER TABLE t_roadmaps ADD CONSTRAINT fk_roadmaps_path_id FOREIGN KEY (first_path_id) REFERENCES t_path_ways (id) ON DELETE CASCADE;
-
+ALTER TABLE t_roadmaps ADD CONSTRAINT fk_roadmaps_category_id FOREIGN KEY (category_id) REFERENCES t_roadmap_categories (id) ON DELETE CASCADE;
 
 ALTER TABLE t_advance ADD CONSTRAINT fk_advance_roadmaps FOREIGN KEY (roadmap_id) REFERENCES t_roadmaps (id) ON DELETE CASCADE;
 ALTER TABLE t_advance ADD CONSTRAINT fk_advance_users FOREIGN KEY (user_id) REFERENCES t_users (id) ON DELETE CASCADE;
@@ -74,6 +74,8 @@ ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_roadmaps;
 ALTER TABLE t_path_ways DROP CONSTRAINT fk_path_ways_id_path_ways_id;
 
 ALTER TABLE t_roadmaps DROP CONSTRAINT fk_roadmaps_path_id;
+ALTER TABLE t_roadmaps DROP CONSTRAINT fk_roadmaps_category_id;
+
 
 ALTER TABLE t_advance DROP CONSTRAINT fk_advance_roadmaps;
 ALTER TABLE t_advance DROP CONSTRAINT fk_advance_users;

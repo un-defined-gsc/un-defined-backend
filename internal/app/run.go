@@ -14,6 +14,7 @@ import (
 	"github.com/un-defined-gsc/un-defined-backend/internal/config"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core"
 	deps_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/deps"
+	roadmap_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/roadmap"
 	social_service "github.com/un-defined-gsc/un-defined-backend/internal/core/services/social"
 	user_services "github.com/un-defined-gsc/un-defined-backend/internal/core/services/user"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http"
@@ -50,6 +51,7 @@ func Run(cfg *config.Config) {
 	// repository initialize
 	userRepo := repositories.NewUserRepositories(pool, rdb)
 	socialRepo := repositories.NewSocialRepositories(pool)
+	roadmapRepo := repositories.NewRoadmapRepositories(pool)
 	// email service initialize
 	emailService := email.EmailInit(cfg.Email.Address, cfg.Email.Name, cfg.Email.Host, cfg.Email.Port, cfg.Email.Username, cfg.Email.Password)
 	go emailService.WriteStdoutError() //doğru bir yöntem değil
@@ -63,10 +65,10 @@ func Run(cfg *config.Config) {
 		storage.NewFileManager(cfg.App.StoragePath),
 	)
 	userser := user_services.NewUsersServices(userRepo, deps)
-
+	roadmapser := roadmap_services.NewRoadmapServices(roadmapRepo, deps)
 	socialser := social_service.NewSocialService(socialRepo, deps)
 	// adapter initialize
-	adapter := core.NewCoreAdapter(userser, deps, socialser)
+	adapter := core.NewCoreAdapter(userser, deps, socialser, roadmapser)
 
 	//handler initialize
 	handlers := http.NewHandler(adapter)

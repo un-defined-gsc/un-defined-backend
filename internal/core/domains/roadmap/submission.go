@@ -8,6 +8,6 @@ import (
 // CompletedMap ...
 type Submission struct {
 	base_domain.Base
-	RoadmapID *uuid.UUID `db:"roadmap_id" json:"-"`
-	UserID    *uuid.UUID `db:"user_id" json:"-"`
+	RoadmapID uuid.UUID `db:"roadmap_id" json:"-"`
+	UserID    uuid.UUID `db:"user_id" json:"-"`
 }

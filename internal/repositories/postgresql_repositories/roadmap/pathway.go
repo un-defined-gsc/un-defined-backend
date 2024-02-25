@@ -42,15 +42,16 @@ func (r *pathWayRepository) Delete(ctx context.Context, pathWayID uuid.UUID) (er
 
 func (r *pathWayRepository) Filter(ctx context.Context, filter *roadmap_domain.PathWay) (pathways []*roadmap_domain.PathWay, err error) {
 	query := `SELECT * FROM t_pathways WHERE
-	($1::uuid IS uuid_nil() OR roadmap_id = $1) AND
-	($2::text IS NULL OR name ILIKE $2 || '%') AND
-	($3::text IS NULL OR description ILIKE $2 || '%') AND
-	($4::uuid IS uuid_nil() OR parent_id = $4)
+	($1::uuid = uuid_nil() OR roadmap_id = $1) AND
+	($2::text = NULL OR name ILIKE $2 || '%') AND
+	($3::text = NULL OR description ILIKE $2 || '%') AND
+	($4::uuid = uuid_nil() OR parent_id = $4)
 	`
 	rows, err := r.dbpool.Query(ctx, query, filter.RoadmapID, filter.Name, filter.Description, filter.ParentID)
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	pathways, err = pgx.CollectRows(rows, pgx.RowToAddrOfStructByName[roadmap_domain.PathWay])
 	return
 }
