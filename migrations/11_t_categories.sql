@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS t_categories (
   PRIMARY KEY (id)
 );
 -- +goose StatementEnd
+INSERT INTO t_categories (name) VALUES ('story');
+INSERT INTO t_categories (name) VALUES ('problem');
+INSERT INTO t_categories (name) VALUES ('question');
+INSERT INTO t_categories (name) VALUES ('jobadvert');
 
 -- +goose Down
 -- +goose StatementBegin
@@ -14,7 +18,3 @@ DROP TABLE t_categories;
 -- +goose StatementEnd
 
 
-INSERT INTO t_categories (name) VALUES ('story');
-INSERT INTO t_categories (name) VALUES ('problem');
-INSERT INTO t_categories (name) VALUES ('question');
-INSERT INTO t_categories (name) VALUES ('jobadvert');
