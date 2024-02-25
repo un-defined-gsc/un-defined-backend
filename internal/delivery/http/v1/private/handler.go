@@ -38,6 +38,10 @@ func (h *PrivateHandler) Init(router fiber.Router) {
 	})
 	h.initUserRoutes(root)
 	h.initPostRoutes(root)
+	h.initCommentRoutes(root)
+	h.initLikeRoutes(root)
+	h.initCategoryRoutes(root)
+
 }
 
 func (h *PrivateHandler) authMiddleware(c *fiber.Ctx) error {

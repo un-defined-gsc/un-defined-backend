@@ -41,14 +41,12 @@ type ICategoriesRepository interface {
 type ICommentsRepository interface {
 
 	// Comment Table Commands //
-	Create(ctx context.Context, comment *social_domain.Comment) (err error)
-	Update(ctx context.Context, newComment *social_domain.Comment) (err error)
-	DeleteByID(ctx context.Context, commentID uuid.UUID) (err error)
+	Create(ctx context.Context, comment *domains.CommentDTO) (err error)
+	DeleteByID(ctx context.Context, commentID, userID uuid.UUID) (err error)
 	// End Comment Table Commands //
 
 	// Comment Table Queries //
-	GetByUUID(ctx context.Context, commentID uuid.UUID) (comment *social_domain.Comment, err error)
-	GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []*social_domain.Comment, err error)
+	GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []*domains.ResCommentDTO, err error)
 	// End Comment Table Queries //
 
 }
@@ -84,9 +82,12 @@ type IImagesRepository interface {
 
 type ILikesRepository interface {
 
+	// Like Table Queries //
+	GetLikesByPostID(ctx context.Context, like *domains.LikeDTO) (likes []*domains.LikeDTO, err error)
+	// End Like Table Queries //
 	// Like Table Commands //
-	Like(ctx context.Context, like *social_domain.Like) (err error)
-	UnLikeByID(ctx context.Context, likeID uuid.UUID) (err error)
+	Like(ctx context.Context, like *domains.LikeDTO) (err error)
+	UnLike(ctx context.Context, like *domains.LikeDTO) (err error)
 	// End Like Table Commands //
 
 }

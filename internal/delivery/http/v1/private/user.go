@@ -29,12 +29,24 @@ func (h *PrivateHandler) initUserRoutes(root fiber.Router) {
 // @Success 200 {object} error_handler.BaseResponse{data=user_domain.User}
 // @Router /private/user/me [get]
 func (h *PrivateHandler) GetUserMe(c *fiber.Ctx) error {
+	limit := c.QueryInt("limit")
+	offset := c.QueryInt("offset")
 	user := c.Locals("user").(domains.SessionDTO)
+
 	userdb, err := h.coreAdapter.UsersServices().UsersService().GetMe(c.Context(), *user.ID)
 	if err != nil {
 		return err
 	}
-	return h.responseJson(200, response_types.RequestSuccess, userdb)
+	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByUserID(c.Context(), *user.ID, uint64(limit), uint64(offset))
+	if err != nil {
+		return err
+	}
+	res := domains.ProfileDTO{
+		User:  *userdb,
+		Posts: posts,
+	}
+
+	return h.responseJson(200, response_types.RequestSuccess, res)
 }
 
 // @Tags User
