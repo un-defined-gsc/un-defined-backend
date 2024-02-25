@@ -4,6 +4,7 @@ app:
   version: '1.0.0'
   prod: false
   storagePath: './storage'
+
 database:
     host: postgres
     port: 5432
@@ -50,10 +51,9 @@ logger:
   log_level: 'debug'
 
 email: 
-  host: examplehost.local
+  host: email.com
   port: 587
-  username: "example@examplehost.local"
-  password: "topsecret"
-  address: "example@examplehost.local"
-  name: "Name Surname"
-
+  username: "example@email.com"
+  password: "topscret"
+  address: "example@email.com""
+  name: "John Doe"

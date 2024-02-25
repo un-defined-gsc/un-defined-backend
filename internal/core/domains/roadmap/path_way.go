@@ -8,8 +8,8 @@ import (
 // PathWay ...
 type PathWay struct {
 	base_domain.Base
-	RoadmapID   *uuid.UUID `db:"roadmap_id" json:"roadmap_id"`
-	Name        string     `db:"name" json:"name"`
-	Description string     `db:"description" json:"description"`
-	ParentID    *uuid.UUID `db:"parent_id" json:"parent_id"`
+	RoadmapID   uuid.UUID `db:"roadmap_id" json:"roadmap_id"`
+	Name        string    `db:"name" json:"name"`
+	Description string    `db:"description" json:"description"`
+	ParentID    uuid.UUID `db:"parent_id" json:"parent_id"`
 }
