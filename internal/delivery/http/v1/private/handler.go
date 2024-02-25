@@ -40,6 +40,7 @@ func (h *PrivateHandler) Init(router fiber.Router) {
 	h.initPostRoutes(root)
 	h.initCommentRoutes(root)
 	h.initLikeRoutes(root)
+	h.initCategoryRoutes(root)
 
 }
 
