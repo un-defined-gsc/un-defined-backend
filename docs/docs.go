@@ -107,7 +107,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/private/comment/{id}": {
             "delete": {
                 "security": [
                     {
@@ -144,7 +146,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/private/like": {
+        "/private/like/{id}": {
             "post": {
                 "security": [
                     {
@@ -260,7 +262,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/social_domain.Post"
+                                            "$ref": "#/definitions/domains.PostDTO"
                                         }
                                     }
                                 }
@@ -356,14 +358,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/private/post/category/{id}": {
+        "/private/post/filter": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get posts by category",
+                "description": "Get posts by filter",
                 "consumes": [
                     "application/json"
                 ],
@@ -373,136 +375,25 @@ const docTemplate = `{
                 "tags": [
                     "Post"
                 ],
-                "summary": "Get posts by category",
+                "summary": "Get posts by filter",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Category ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "name": "categoryID",
+                        "in": "path"
                     },
-                    {
-                        "type": "integer",
-                        "description": "Limit",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Offset",
-                        "name": "offset",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/error_handler.BaseResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/social_domain.Post"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/private/post/tag/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Get posts by tag",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Get posts by tag",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tag ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Offset",
-                        "name": "offset",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/error_handler.BaseResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/social_domain.Post"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/private/post/user/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Get posts by user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Get posts by user",
-                "parameters": [
                     {
                         "type": "string",
                         "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "name": "userID",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tag",
+                        "name": "tag",
+                        "in": "path"
                     },
                     {
                         "type": "integer",
@@ -529,7 +420,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/social_domain.Post"
+                                            "$ref": "#/definitions/domains.PostDTO"
                                         }
                                     }
                                 }
@@ -706,6 +597,20 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get user info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -718,7 +623,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/user_domain.User"
+                                            "$ref": "#/definitions/domains.ProfileDTO"
                                         }
                                     }
                                 }
@@ -1125,6 +1030,9 @@ const docTemplate = `{
             "properties": {
                 "category": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "string"
                 }
             }
         },
@@ -1325,6 +1233,64 @@ const docTemplate = `{
                 }
             }
         },
+        "domains.PostDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domains.TagDTO"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domains.ProfileDTO": {
+            "type": "object",
+            "properties": {
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domains.PostDTO"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/user_domain.User"
+                }
+            }
+        },
         "domains.RegisterDTO": {
             "type": "object",
             "required": [
@@ -1446,29 +1412,6 @@ const docTemplate = `{
                 },
                 "status_code": {
                     "type": "integer"
-                }
-            }
-        },
-        "social_domain.Post": {
-            "type": "object",
-            "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "category_id": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
                 }
             }
         },

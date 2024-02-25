@@ -21,22 +21,22 @@ func NewCommentsRepository(dbpool *pgxpool.Pool) social_ports.ICommentsRepositor
 
 func (r *iCommentsRepository) Create(ctx context.Context, comment *domains.CommentDTO) (err error) {
 	_, err = r.dbpool.Exec(ctx, `
-		INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3)
+		INSERT INTO t_comments (user_id, post_id, comments) VALUES ($1, $2, $3)
 	`, comment.UserID, comment.PostID, comment.Body)
 	return
 }
 
 func (r *iCommentsRepository) DeleteByID(ctx context.Context, commentID, userID uuid.UUID) (err error) {
 	_, err = r.dbpool.Exec(ctx, `
-		DELETE FROM comments WHERE id = $1 and user_id = $2
+		DELETE FROM t_comments WHERE id = $1 and user_id = $2
 	`, commentID, userID)
 	return
 }
 
-func (r *iCommentsRepository) GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []*domains.ResCommentDTO, err error) {
+func (r *iCommentsRepository) GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []domains.ResCommentDTO, err error) {
 	rows, err := r.dbpool.Query(ctx, `
-		SELECT c.id, u.name, u.surname, c.comments, c.created_at FROM comments c
-		INNER JOIN users u ON c.user_id = u.id
+		SELECT c.id, u.first_name, u.last_name, c.comments, c.created_at FROM t_comments c
+		INNER JOIN t_users u ON c.user_id = u.id
 		WHERE c.post_id = $1
 		LIMIT $2 OFFSET $3
 	`, postID, limit, offset)
@@ -51,7 +51,7 @@ func (r *iCommentsRepository) GetAllByPostID(ctx context.Context, postID uuid.UU
 		if err != nil {
 			return
 		}
-		comments = append(comments, comment)
+		comments = append(comments, *comment)
 	}
 	return
 }

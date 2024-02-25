@@ -15,9 +15,7 @@ type IPostsService interface {
 	DeletePost(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error)
 	GetPost(ctx context.Context, postID uuid.UUID, userID uuid.UUID, limit, offset uint64) (post *domain.InPostDTO, err error)
 	GetPosts(ctx context.Context, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetPostByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetPostByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetPostByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
+	GetPostByFilter(ctx context.Context, categoryID, userID uuid.UUID, tag string, limit, offset uint64) (posts []*domains.PostDTO, err error)
 }
 
 type ICategoriesService interface {
