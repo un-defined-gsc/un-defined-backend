@@ -30,7 +30,7 @@ func newUsersService(
 	}
 }
 
-func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, userdata user_domain.User, err error) {
+func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, userdata domains.LoginResponseDTO, err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(login); err != nil {
 		return
 	}
@@ -83,7 +83,7 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	if user.MFAEnabled {
 		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserID(ctx, *user.ID)
 		if err != nil {
-			return nil, user_domain.User{}, err
+			return nil, domains.LoginResponseDTO{}, err
 		}
 		sess.Key = mfaSet.Key
 		sess.EnabledSession = false
@@ -93,19 +93,17 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	}
 	nowTime := time.Now().UTC()
 	sess.LastLogin = &nowTime
-	userdata = user_domain.User{
+	userdata = domains.LoginResponseDTO{
 		ID:            user.ID,
+		UpdatedAt:     user.UpdatedAt,
+		CreatedAt:     user.CreatedAt,
+		FirstName:     user.FirstName,
+		LastName:      user.LastName,
+		Lang:          user.Lang,
 		Email:         user.Email,
 		EmailVerified: user.EmailVerified,
 		MasterAdmin:   user.MasterAdmin,
-		Lang:          user.Lang,
-		MFAEnabled:    user.MFAEnabled,
-		Disabled:      user.Disabled,
-		DisabledAt:    user.DisabledAt,
-		LastLogin:     &nowTime,
-		FirstName:     user.FirstName,
-		LastName:      user.LastName,
-		CreatedAt:     user.CreatedAt,
+		Banned:        user.Banned,
 	}
 	return
 }

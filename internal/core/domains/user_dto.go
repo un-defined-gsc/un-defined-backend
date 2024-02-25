@@ -61,3 +61,23 @@ type PasswordRecoveryDTO struct {
 	NewPassword        string `json:"new_password" validate:"required,min=10" example:"12345678"`
 	NewPasswordConfirm string `json:"new_password_confirm" validate:"required,min=10,eqfield=NewPassword" example:"12345678"`
 }
+
+type LoginResponseDTO struct {
+	ID            *uuid.UUID `db:"id" json:"-"`
+	UpdatedAt     *time.Time `db:"updated_at" json:"updated_at"`
+	CreatedAt     *time.Time `db:"created_at" json:"created_at"`
+	Password      string     `db:"password" json:"password,omitempty"`
+	FirstName     string     `db:"first_name" json:"firstname" validate:"required,alphaunicode" example:"Resul"`
+	LastName      string     `db:"last_name" json:"lastname" validate:"required,alphaunicode" example:"Çelik"`
+	Lang          string     `db:"lang" json:"lang" example:"tr"` //🤘
+	Email         string     `db:"email" json:"email" validate:"omitempty,email" example:"resul@mon.time"`
+	EmailVerified bool       `db:"email_verified" json:"email_verified"`
+	MasterAdmin   bool       `db:"master_admin" json:"master_admin"`
+	Banned        bool       `db:"banned" json:"-"`
+	Gender        string     `db:"gender" json:"gender" validate:"required,oneof=male female not other" example:"male"`
+	Appeal        *string    `db:"appeal" json:"appeal" validate:"omitempty" example:"I am a Attack Helicopter 🚁"`
+	MFAEnabled    bool       `db:"mfa_enabled" json:"mfa_enabled"`
+	Disabled      bool       `db:"disabled" json:"-"`
+	DisabledAt    *time.Time `db:"disabled_at" json:"-"`
+	LastLogin     *time.Time `db:"last_login" json:"last_login"`
+}

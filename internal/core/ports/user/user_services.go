@@ -9,7 +9,7 @@ import (
 )
 
 type IUsersService interface {
-	Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, userdata user_domain.User, err error)
+	Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, userdata domains.LoginResponseDTO, err error)
 	EnableSession(ctx context.Context, session *domains.SessionDTO, token string) (err error)
 	Register(ctx context.Context, user domains.RegisterDTO) (err error)
 	VerifyProfile(ctx context.Context, token string) (err error)
