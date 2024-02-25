@@ -29,7 +29,7 @@ func (h *PublicHandler) Login(c *fiber.Ctx) error {
 	if err := c.BodyParser(&login); err != nil {
 		return err
 	}
-	resp, err := h.adapter.UsersServices().UsersService().Login(c.Context(), login)
+	resp, userdata, err := h.adapter.UsersServices().UsersService().Login(c.Context(), login)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (h *PublicHandler) Login(c *fiber.Ctx) error {
 	if err := sess.Save(); err != nil {
 		return err
 	}
-	return h.responseJson(200, response_types.RequestSuccess, nil)
+	return h.responseJson(200, response_types.RequestSuccess, userdata)
 }
 
 // @Tags Auth

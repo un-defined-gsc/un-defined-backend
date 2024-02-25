@@ -30,7 +30,7 @@ func newUsersService(
 	}
 }
 
-func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, err error) {
+func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *domains.SessionDTO, userdata user_domain.User, err error) {
 	if err = s.deps.ValidatorService().ValidateStruct(login); err != nil {
 		return
 	}
@@ -83,7 +83,7 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	if user.MFAEnabled {
 		mfaSet, err := s.userRepositories.MFAsRepository().GetByUserID(ctx, *user.ID)
 		if err != nil {
-			return nil, err
+			return nil, user_domain.User{}, err
 		}
 		sess.Key = mfaSet.Key
 		sess.EnabledSession = false
@@ -93,6 +93,7 @@ func (s *userService) Login(ctx context.Context, login domains.LoginDTO) (sess *
 	}
 	nowTime := time.Now().UTC()
 	sess.LastLogin = &nowTime
+	userdata = *user
 	return
 }
 
