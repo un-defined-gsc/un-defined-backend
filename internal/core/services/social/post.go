@@ -113,12 +113,17 @@ func (s *postService) DeletePost(ctx context.Context, postID uuid.UUID, userID u
 	return s.socialRepositories.PostsRepository().DeleteByID(ctx, postID, userID)
 }
 
-func (s *postService) GetPost(ctx context.Context, postID, userID uuid.UUID) (post *domain.InPostDTO, err error) {
+func (s *postService) GetPost(ctx context.Context, postID, userID uuid.UUID, limit, offset uint64) (post *domain.InPostDTO, err error) {
 
 	newPost, err := s.socialRepositories.PostsRepository().GetByID(ctx, postID, userID)
 	if err != nil {
 		return
 	}
+	comment, err := s.socialRepositories.CommentsRepository().GetAllByPostID(ctx, postID, limit, offset)
+	if err != nil {
+		return
+	}
+	newPost.Comments = comment
 	newPost.Editable = true
 	newPost.Deleteable = true
 	// son 24 saat kontrolü yapılacak

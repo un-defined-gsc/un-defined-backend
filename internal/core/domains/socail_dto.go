@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	user_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/user"
 )
 
 //----- Social ------//
@@ -28,18 +29,18 @@ type PostDTO struct {
 }
 
 type InPostDTO struct {
-	Category   string       `json:"category"`
-	Name       string       `json:"name"`
-	Surname    string       `json:"surname"`
-	Title      string       `json:"title"`
-	Content    string       `json:"content"`
-	Likes      uint64       `json:"likes"`
-	Editable   bool         `json:"editable"`
-	Deleteable bool         `json:"deleteable"`
-	Comments   []CommentDTO `json:"comments"`
-	Images     []string     `json:"images"`
-	Tags       []TagDTO     `json:"tags"`
-	CreatedAt  time.Time    `json:"created_at"`
+	Category   string           `json:"category"`
+	Name       string           `json:"name"`
+	Surname    string           `json:"surname"`
+	Title      string           `json:"title"`
+	Content    string           `json:"content"`
+	Likes      uint64           `json:"likes"`
+	Editable   bool             `json:"editable"`
+	Deleteable bool             `json:"deleteable"`
+	Comments   []*ResCommentDTO `json:"comments"`
+	Images     []string         `json:"images"`
+	Tags       []TagDTO         `json:"tags"`
+	CreatedAt  time.Time        `json:"created_at"`
 }
 type CratePostDTO struct {
 	ID       uuid.UUID `json:"-" `
@@ -51,11 +52,9 @@ type CratePostDTO struct {
 	Image    []string  `json:"image" example:"image"`
 }
 type CommentDTO struct {
-	ID        uuid.UUID `json:"id"`
-	Name      string    `json:"name"`
-	Surname   string    `json:"surname"`
-	Body      string    `json:"body"`
-	CreatedAt time.Time `json:"created_at"`
+	UserID uuid.UUID `json:"-"`
+	PostID uuid.UUID `json:"post_id" `
+	Body   string    `json:"body"`
 }
 
 type TagDTO struct {
@@ -80,4 +79,22 @@ type CrateTagDTO struct {
 	Name   string    `json:"name" validate:"required"`
 	UserID uuid.UUID `json:"-"`
 	PostID uuid.UUID `json:"-"`
+}
+
+type LikeDTO struct {
+	UserID uuid.UUID `json:"-"`
+	PostID uuid.UUID `json:"post_id"`
+}
+
+type ResCommentDTO struct {
+	ID        uuid.UUID `json:"id"`
+	Name      string    `json:"name"`
+	Surname   string    `json:"surname"`
+	Body      string    `json:"body"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type ProfileDTO struct {
+	User  user_domain.User `json:"user"`
+	Posts []*PostDTO       `json:"posts"`
 }

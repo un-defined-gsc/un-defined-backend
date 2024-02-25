@@ -58,16 +58,15 @@ func (r *postRepository) DeleteByID(ctx context.Context, postID, userID uuid.UUI
 }
 
 func (r *postRepository) GetByID(ctx context.Context, postID, userID uuid.UUID) (post *domains.InPostDTO, err error) {
-	query := `SELECT u.name,u.surname,c.name, p.title, p.content, p.created_at,t.name,COUNT(l.* ) AS like_count,c.comment,i.path FROM t_posts p
+	query := `SELECT u.name,u.surname,c.name, p.title, p.content, p.created_at,t.name,COUNT(l.* ) AS like_count,i.path FROM t_posts p
 	INNER JOIN t_users u ON p.user_id = u.id
 	INNER JOIN t_categories c ON p.category_id = c.id
 	INNER JOIN t_images i ON p.id = i.post_id
 	INNER JOIN t_likes l ON p.id = l.post_id
-	INNER JOIN t_comments c ON p.id = c.post_id
 	INNER JOIN t_tags t ON p.id = t.post_id 
-	WHERE ($1::uuid = uuid_nil() OR p.id = $1) AND 
-	($2::uuid = uuid_nil() OR p.user_id = $2)`
-	err = r.dbpool.QueryRow(ctx, query, postID).Scan(&post.Name, &post.Surname, &post.Category, &post.Title, &post.Content, &post.CreatedAt, &post.Tags, &post.Likes, &post.Comments, &post.Images)
+	WHERE ($1::uuid = uuid_nil() OR p.id = $1)  AND 
+		  ($2::uuid = uuid_nil() OR p.user_id = $2)`
+	err = r.dbpool.QueryRow(ctx, query, postID).Scan(&post.Name, &post.Surname, &post.Category, &post.Title, &post.Content, &post.CreatedAt, &post.Tags, &post.Likes, &post.Images)
 	return
 }
 
