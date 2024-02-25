@@ -14,9 +14,7 @@ func (h *PrivateHandler) initPostRoutes(root fiber.Router) {
 	post.Delete("/:id<guid>", h.DeletePost)
 	post.Get("/", h.GetPosts)
 	post.Get("/:id<guid>", h.GetPost)
-	post.Get("/user/:id<guid>", h.GetPostsByUser)
-	post.Get("/tag/:id<guid>", h.GetPostsByTag)
-	post.Get("/category/:id<guid>", h.GetPostsByCategory)
+	post.Get("/filter", h.GetPostsByFilter)
 
 }
 
@@ -77,9 +75,12 @@ func (h *PrivateHandler) UpdatePost(c *fiber.Ctx) error {
 // @Router /private/post/{id} [delete]
 func (h *PrivateHandler) DeletePost(c *fiber.Ctx) error {
 	postID := c.Params("id")
-	newPostID := uuid.MustParse(postID)
+	newPostID, err := uuid.Parse(postID)
+	if err != nil {
+		return err
+	}
 	userID := c.Locals("user").(domains.SessionDTO).ID
-	err := h.coreAdapter.SocialServices().PostsService().DeletePost(c.Context(), newPostID, *userID)
+	err = h.coreAdapter.SocialServices().PostsService().DeletePost(c.Context(), newPostID, *userID)
 	if err != nil {
 		return err
 
@@ -99,8 +100,14 @@ func (h *PrivateHandler) DeletePost(c *fiber.Ctx) error {
 func (h *PrivateHandler) GetPost(c *fiber.Ctx) error {
 	postID := c.Params("id")
 	limit := c.QueryInt("limit")
+	if limit == 0 {
+		limit = 10
+	}
 	offset := c.QueryInt("offset")
-	newPostID := uuid.MustParse(postID)
+	newPostID, err := uuid.Parse(postID)
+	if err != nil {
+		return err
+	}
 	userID := c.Locals("user").(domains.SessionDTO).ID
 	post, err := h.coreAdapter.SocialServices().PostsService().GetPost(c.Context(), newPostID, *userID, uint64(limit), uint64(offset))
 	if err != nil {
@@ -117,17 +124,15 @@ func (h *PrivateHandler) GetPost(c *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Param limit query int false "Limit"
 // @Param offset query int false "Offset"
-// @Success 200 {object} error_handler.BaseResponse{data=social_domain.Post}
+// @Success 200 {object} error_handler.BaseResponse{data=domains.PostDTO}
 // @Router /private/post [get]
 func (h *PrivateHandler) GetPosts(c *fiber.Ctx) error {
 	limit := c.QueryInt("limit")
-	offset := c.QueryInt("offset")
 	if limit == 0 {
 		limit = 10
 	}
-	if offset == 0 {
-		offset = 0
-	}
+	offset := c.QueryInt("offset")
+
 	posts, err := h.coreAdapter.SocialServices().PostsService().GetPosts(c.Context(), uint64(limit), uint64(offset))
 	if err != nil {
 		return err
@@ -136,86 +141,36 @@ func (h *PrivateHandler) GetPosts(c *fiber.Ctx) error {
 }
 
 // @Tags Post
-// @Summary Get posts by user
-// @Description Get posts by user
+// @Summary Get posts by filter
+// @Description Get posts by filter
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Param id path string true "User ID"
+// @Param categoryID path string false "Category ID"
+// @Param userID path string false "User ID"
+// @Param tag path string false "Tag"
 // @Param limit query int false "Limit"
 // @Param offset query int false "Offset"
-// @Success 200 {object} error_handler.BaseResponse{data=social_domain.Post}
-// @Router /private/post/user/{id} [get]
-func (h *PrivateHandler) GetPostsByUser(c *fiber.Ctx) error {
-	userID := c.Params("id")
+// @Success 200 {object} error_handler.BaseResponse{data=domains.PostDTO}
+// @Router /private/post/filter [get]
+func (h *PrivateHandler) GetPostsByFilter(c *fiber.Ctx) error {
+	categoryID := c.Query("categoryID")
+	userID := c.Query("userID")
+	tag := c.Query("tag")
 	limit := c.QueryInt("limit")
-	offset := c.QueryInt("offset")
-	newUserID := uuid.MustParse(userID)
 	if limit == 0 {
 		limit = 10
 	}
-	if offset == 0 {
-		offset = 0
-	}
-	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByUserID(c.Context(), newUserID, uint64(limit), uint64(offset))
+	offset := c.QueryInt("offset")
+	newCategoryID, err := uuid.Parse(categoryID)
 	if err != nil {
-		return err
+		newCategoryID = uuid.Nil
 	}
-	return h.responseJson(200, response_types.RequestSuccess, posts)
-}
-
-// @Tags Post
-// @Summary Get posts by tag
-// @Description Get posts by tag
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @Param id path string true "Tag ID"
-// @Param limit query int false "Limit"
-// @Param offset query int false "Offset"
-// @Success 200 {object} error_handler.BaseResponse{data=social_domain.Post}
-// @Router /private/post/tag/{id} [get]
-func (h *PrivateHandler) GetPostsByTag(c *fiber.Ctx) error {
-	tagID := c.Params("id")
-	limit := c.QueryInt("limit")
-	offset := c.QueryInt("offset")
-	newTagID := uuid.MustParse(tagID)
-	if limit == 0 {
-		limit = 10
-	}
-	if offset == 0 {
-		offset = 0
-	}
-	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByTag(c.Context(), newTagID, uint64(limit), uint64(offset))
+	newUserID, err := uuid.Parse(userID)
 	if err != nil {
-		return err
+		newUserID = uuid.Nil
 	}
-	return h.responseJson(200, response_types.RequestSuccess, posts)
-}
-
-// @Tags Post
-// @Summary Get posts by category
-// @Description Get posts by category
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @Param id path string true "Category ID"
-// @Param limit query int false "Limit"
-// @Param offset query int false "Offset"
-// @Success 200 {object} error_handler.BaseResponse{data=social_domain.Post}
-// @Router /private/post/category/{id} [get]
-func (h *PrivateHandler) GetPostsByCategory(c *fiber.Ctx) error {
-	categoryID := c.Params("id")
-	limit := c.QueryInt("limit")
-	offset := c.QueryInt("offset")
-	newCategoryID := uuid.MustParse(categoryID)
-	if limit == 0 {
-		limit = 10
-	}
-	if offset == 0 {
-		offset = 0
-	}
-	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByCategory(c.Context(), newCategoryID, uint64(limit), uint64(offset))
+	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByFilter(c.Context(), newCategoryID, newUserID, tag, uint64(limit), uint64(offset))
 	if err != nil {
 		return err
 	}

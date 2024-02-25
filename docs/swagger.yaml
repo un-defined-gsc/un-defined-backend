@@ -4,6 +4,8 @@ definitions:
     properties:
       category:
         type: string
+      id:
+        type: string
     type: object
   domains.CommentDTO:
     properties:
@@ -143,6 +145,44 @@ definitions:
     required:
     - email
     type: object
+  domains.PostDTO:
+    properties:
+      category:
+        type: string
+      comments:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      likes:
+        type: integer
+      name:
+        type: string
+      surname:
+        type: string
+      tags:
+        items:
+          $ref: '#/definitions/domains.TagDTO'
+        type: array
+      title:
+        type: string
+    type: object
+  domains.ProfileDTO:
+    properties:
+      posts:
+        items:
+          $ref: '#/definitions/domains.PostDTO'
+        type: array
+      user:
+        $ref: '#/definitions/user_domain.User'
+    type: object
   domains.RegisterDTO:
     properties:
       appeal:
@@ -230,21 +270,6 @@ definitions:
       status_code:
         type: integer
     type: object
-  social_domain.Post:
-    properties:
-      body:
-        type: string
-      category_id:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      title:
-        type: string
-      user_id:
-        type: string
-    type: object
   user_domain.User:
     properties:
       appeal:
@@ -320,28 +345,6 @@ paths:
       tags:
       - Category
   /private/comment:
-    delete:
-      consumes:
-      - application/json
-      description: Delete comment
-      parameters:
-      - description: Comment ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/error_handler.BaseResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete comment
-      tags:
-      - Comment
     post:
       consumes:
       - application/json
@@ -370,7 +373,30 @@ paths:
       summary: Create comment
       tags:
       - Comment
-  /private/like:
+  /private/comment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete comment
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/error_handler.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete comment
+      tags:
+      - Comment
+  /private/like/{id}:
     delete:
       consumes:
       - application/json
@@ -439,7 +465,7 @@ paths:
             - $ref: '#/definitions/error_handler.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/social_domain.Post'
+                  $ref: '#/definitions/domains.PostDTO'
               type: object
       security:
       - ApiKeyAuth: []
@@ -547,88 +573,23 @@ paths:
       summary: Get post
       tags:
       - Post
-  /private/post/category/{id}:
+  /private/post/filter:
     get:
       consumes:
       - application/json
-      description: Get posts by category
+      description: Get posts by filter
       parameters:
       - description: Category ID
         in: path
-        name: id
-        required: true
+        name: categoryID
         type: string
-      - description: Limit
-        in: query
-        name: limit
-        type: integer
-      - description: Offset
-        in: query
-        name: offset
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/error_handler.BaseResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/social_domain.Post'
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Get posts by category
-      tags:
-      - Post
-  /private/post/tag/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Get posts by tag
-      parameters:
-      - description: Tag ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Limit
-        in: query
-        name: limit
-        type: integer
-      - description: Offset
-        in: query
-        name: offset
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/error_handler.BaseResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/social_domain.Post'
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Get posts by tag
-      tags:
-      - Post
-  /private/post/user/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Get posts by user
-      parameters:
       - description: User ID
         in: path
-        name: id
-        required: true
+        name: userID
+        type: string
+      - description: Tag
+        in: path
+        name: tag
         type: string
       - description: Limit
         in: query
@@ -648,11 +609,11 @@ paths:
             - $ref: '#/definitions/error_handler.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/social_domain.Post'
+                  $ref: '#/definitions/domains.PostDTO'
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Get posts by user
+      summary: Get posts by filter
       tags:
       - Post
   /private/user/enable/{key}:
@@ -700,6 +661,15 @@ paths:
       consumes:
       - application/json
       description: Get user info
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
       produces:
       - application/json
       responses:
@@ -710,7 +680,7 @@ paths:
             - $ref: '#/definitions/error_handler.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/user_domain.User'
+                  $ref: '#/definitions/domains.ProfileDTO'
               type: object
       security:
       - ApiKeyAuth: []
