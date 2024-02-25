@@ -42,6 +42,8 @@ var (
 	ErrMonitorNotFound           = NewServiceErrorWithKey(1010, "monitor_not_found", http.StatusNotFound)                // Monitor bulunamadı
 	ErrMonitorAlreadyExists      = NewServiceErrorWithKey(1011, "monitor_already_exists", http.StatusConflict)           // Monitor zaten var
 	ErrCaptchaInvalid            = NewServiceErrorWithKey(1012, "captcha_invalid", http.StatusBadRequest)
+	ErrLikedAlreadyExists        = NewServiceErrorWithKey(1013, "like_already_exists", http.StatusConflict) // Monitor zaten var
+	ErrLikeNotFound              = NewServiceErrorWithKey(1014, "like_not_found", http.StatusNotFound)      // Monitor zaten var
 	// Captcha hatalı
 
 	// 2000: Sistem ile ilgili hatalar 500

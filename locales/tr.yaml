@@ -87,3 +87,7 @@ user.mfa_requried: "Oturum devre dışı bırakıldı lütfen otp anahtarını g
 mfa_not_enabled: "Multi faktör kimlik doğrulama etkin değil"
 monitor_not_found: "Monitor bulunamadı"
 monitor_already_exists: "Monitor zaten mevcut"
+
+like_already_exists: "Beğenme Oluşturulmadı."
+
+like_not_found: "like bulunamadı"

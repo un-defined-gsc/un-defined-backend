@@ -2,6 +2,7 @@ package private
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
 	user_domain "github.com/un-defined-gsc/un-defined-backend/internal/core/domains/user"
 	"github.com/un-defined-gsc/un-defined-backend/internal/delivery/http/response_types"
@@ -26,10 +27,15 @@ func (h *PrivateHandler) initUserRoutes(root fiber.Router) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Success 200 {object} error_handler.BaseResponse{data=user_domain.User}
+// @Param limit query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {object} error_handler.BaseResponse{data=domains.ProfileDTO}
 // @Router /private/user/me [get]
 func (h *PrivateHandler) GetUserMe(c *fiber.Ctx) error {
 	limit := c.QueryInt("limit")
+	if limit == 0 {
+		limit = 10
+	}
 	offset := c.QueryInt("offset")
 	user := c.Locals("user").(domains.SessionDTO)
 
@@ -37,7 +43,7 @@ func (h *PrivateHandler) GetUserMe(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByUserID(c.Context(), *user.ID, uint64(limit), uint64(offset))
+	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByFilter(c.Context(), uuid.Nil, *user.ID, "", uint64(limit), uint64(offset))
 	if err != nil {
 		return err
 	}

@@ -11,18 +11,16 @@ import (
 type IPostsRepository interface {
 
 	// Post Table Commands //
-	Create(ctx context.Context, post *domains.CratePostDTO, categoryID uuid.UUID) (postID uuid.UUID, err error)
+	Create(ctx context.Context, post *domains.CratePostDTO, categoryID uuid.UUID) (err error)
 	Update(ctx context.Context, newPost *domains.UpdatePostDTO) (err error)
 	DeleteByID(ctx context.Context, postID uuid.UUID, userID uuid.UUID) (err error)
 
 	// End Post Table Commands //
 
 	// Post Table Queries //
-	GetByID(ctx context.Context, postID, userID uuid.UUID) (post *domains.InPostDTO, err error)
+	GetByID(ctx context.Context, postID, userID uuid.UUID) (post domains.InPostDTO, err error)
 	GetAll(ctx context.Context, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetByCategory(ctx context.Context, categoryID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetByTag(ctx context.Context, tagID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
-	GetByUserID(ctx context.Context, userID uuid.UUID, limit, offset uint64) (posts []*domains.PostDTO, err error)
+	GetByPostFilter(ctx context.Context, categoryID, userID uuid.UUID, tag string, limit, offset uint64) (posts []*domains.PostDTO, err error)
 
 	// End Post Table Queries //
 
@@ -46,7 +44,7 @@ type ICommentsRepository interface {
 	// End Comment Table Commands //
 
 	// Comment Table Queries //
-	GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []*domains.ResCommentDTO, err error)
+	GetAllByPostID(ctx context.Context, postID uuid.UUID, limit, offset uint64) (comments []domains.ResCommentDTO, err error)
 	// End Comment Table Queries //
 
 }
@@ -86,8 +84,8 @@ type ILikesRepository interface {
 	GetLikesByPostID(ctx context.Context, like *domains.LikeDTO) (likes []*domains.LikeDTO, err error)
 	// End Like Table Queries //
 	// Like Table Commands //
-	Like(ctx context.Context, like *domains.LikeDTO) (err error)
-	UnLike(ctx context.Context, like *domains.LikeDTO) (err error)
+	Like(ctx context.Context, like *domains.LikeDTO) (likeID uuid.UUID, err error)
+	UnLike(ctx context.Context, like *domains.LikeDTO) (likeID uuid.UUID, err error)
 	// End Like Table Commands //
 
 }

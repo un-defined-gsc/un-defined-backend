@@ -10,7 +10,8 @@ import (
 //----- Social ------//
 
 type CategoryDTO struct {
-	Name string `json:"category"`
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"category"`
 }
 
 type PostDTO struct {
@@ -29,18 +30,18 @@ type PostDTO struct {
 }
 
 type InPostDTO struct {
-	Category   string           `json:"category"`
-	Name       string           `json:"name"`
-	Surname    string           `json:"surname"`
-	Title      string           `json:"title"`
-	Content    string           `json:"content"`
-	Likes      uint64           `json:"likes"`
-	Editable   bool             `json:"editable"`
-	Deleteable bool             `json:"deleteable"`
-	Comments   []*ResCommentDTO `json:"comments"`
-	Images     []string         `json:"images"`
-	Tags       []TagDTO         `json:"tags"`
-	CreatedAt  time.Time        `json:"created_at"`
+	Category   string          `json:"category"`
+	Name       string          `json:"name"`
+	Surname    string          `json:"surname"`
+	Title      string          `json:"title"`
+	Content    string          `json:"content"`
+	Likes      uint64          `json:"likes"`
+	Editable   bool            `json:"editable"`
+	Deleteable bool            `json:"deleteable"`
+	Comments   []ResCommentDTO `json:"comments"`
+	Images     []string        `json:"images"`
+	Tags       []TagDTO        `json:"tags"`
+	CreatedAt  time.Time       `json:"created_at"`
 }
 type CratePostDTO struct {
 	ID       uuid.UUID `json:"-" `

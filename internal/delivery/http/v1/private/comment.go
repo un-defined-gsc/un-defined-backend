@@ -1,6 +1,8 @@
 package private
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
@@ -45,8 +47,9 @@ func (h *PrivateHandler) CreateComment(c *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Param id path string true "Comment ID"
 // @Success 200 {object} error_handler.BaseResponse
-// @Router /private/comment [delete]
+// @Router /private/comment/{id} [delete]
 func (h *PrivateHandler) DeleteComment(c *fiber.Ctx) error {
+	fmt.Println("DeleteComment")
 	id := c.Params("id")
 	idUUID, err := uuid.Parse(id)
 	if err != nil {

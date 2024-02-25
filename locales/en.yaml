@@ -87,3 +87,6 @@ mfa_not_enabled: "MFA not enabled Please enable MFA"
 
 monitor_not_found: "Monitor not found"
 monitor_already_exists: "Monitor already exists"
+
+like_already_exists: "like_already_exists"
+like_not_found: "like_not_found"

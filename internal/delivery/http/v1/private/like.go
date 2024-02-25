@@ -1,6 +1,8 @@
 package private
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
@@ -22,7 +24,7 @@ func (h *PrivateHandler) initLikeRoutes(router fiber.Router) {
 // @Security ApiKeyAuth
 // @Param id path string true "Post ID"
 // @Success 200 {object} error_handler.BaseResponse
-// @Router /private/like [post]
+// @Router /private/like/{id} [post]
 func (h *PrivateHandler) Like(c *fiber.Ctx) error {
 	postID := c.Params("id")
 	postUUID, err := uuid.Parse(postID)
@@ -30,11 +32,14 @@ func (h *PrivateHandler) Like(c *fiber.Ctx) error {
 		return err
 	}
 	userID := c.Locals("user").(domains.SessionDTO).ID
-
-	h.coreAdapter.SocialServices().LikesService().Like(c.Context(), &domains.LikeDTO{
+	fmt.Println(userID)
+	err = h.coreAdapter.SocialServices().LikesService().Like(c.Context(), &domains.LikeDTO{
 		UserID: *userID,
 		PostID: postUUID,
 	})
+	if err != nil {
+		return err
+	}
 	return h.responseJson(200, response_types.RequestSuccess, nil)
 }
 
@@ -46,7 +51,7 @@ func (h *PrivateHandler) Like(c *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Param id path string true "Post ID"
 // @Success 200 {object} error_handler.BaseResponse
-// @Router /private/like [delete]
+// @Router /private/like/{id} [delete]
 func (h *PrivateHandler) UnLike(c *fiber.Ctx) error {
 	postID := c.Params("id")
 	postUUID, err := uuid.Parse(postID)
@@ -55,9 +60,12 @@ func (h *PrivateHandler) UnLike(c *fiber.Ctx) error {
 	}
 	userID := c.Locals("user").(domains.SessionDTO).ID
 
-	h.coreAdapter.SocialServices().LikesService().UnLike(c.Context(), &domains.LikeDTO{
+	err = h.coreAdapter.SocialServices().LikesService().UnLike(c.Context(), &domains.LikeDTO{
 		UserID: *userID,
 		PostID: postUUID,
 	})
+	if err != nil {
+		return err
+	}
 	return h.responseJson(200, response_types.RequestSuccess, nil)
 }

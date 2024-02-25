@@ -27,7 +27,7 @@ func (r *CategoryRepository) GetAll(ctx context.Context) (categories []*domains.
 	}
 	for rows.Next() {
 		var category domains.CategoryDTO
-		err = rows.Scan(&category.Name)
+		err = rows.Scan(&category.ID, &category.Name)
 		if err != nil {
 			return
 		}
