@@ -580,15 +580,15 @@ paths:
       description: Get posts by filter
       parameters:
       - description: Category ID
-        in: path
+        in: query
         name: categoryID
         type: string
       - description: User ID
-        in: path
+        in: query
         name: userID
         type: string
       - description: Tag
-        in: path
+        in: query
         name: tag
         type: string
       - description: Limit

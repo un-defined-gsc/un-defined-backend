@@ -1,6 +1,8 @@
 package private
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/un-defined-gsc/un-defined-backend/internal/core/domains"
@@ -146,9 +148,9 @@ func (h *PrivateHandler) GetPosts(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Param categoryID path string false "Category ID"
-// @Param userID path string false "User ID"
-// @Param tag path string false "Tag"
+// @Param categoryID query string false "Category ID"
+// @Param userID query string false "User ID"
+// @Param tag query string false "Tag"
 // @Param limit query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {object} error_handler.BaseResponse{data=domains.PostDTO}
@@ -162,14 +164,11 @@ func (h *PrivateHandler) GetPostsByFilter(c *fiber.Ctx) error {
 		limit = 10
 	}
 	offset := c.QueryInt("offset")
-	newCategoryID, err := uuid.Parse(categoryID)
-	if err != nil {
-		newCategoryID = uuid.Nil
-	}
-	newUserID, err := uuid.Parse(userID)
-	if err != nil {
-		newUserID = uuid.Nil
-	}
+	newCategoryID, _ := uuid.Parse(categoryID)
+
+	newUserID, _ := uuid.Parse(userID)
+	fmt.Println(newCategoryID, newUserID, tag, limit, offset)
+
 	posts, err := h.coreAdapter.SocialServices().PostsService().GetPostByFilter(c.Context(), newCategoryID, newUserID, tag, uint64(limit), uint64(offset))
 	if err != nil {
 		return err

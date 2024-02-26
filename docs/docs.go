@@ -381,19 +381,19 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Category ID",
                         "name": "categoryID",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "User ID",
                         "name": "userID",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Tag",
                         "name": "tag",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "integer",
